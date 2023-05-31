@@ -1,0 +1,13 @@
+span {
+    color: #8CFC86;
+}
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home h2 {
+    color: #8CFC86;
+}

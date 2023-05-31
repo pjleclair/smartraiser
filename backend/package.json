@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "test": "jest --verbose",
+    "start": "npx nodemon app.js",
+    "build:ui": "rm -rf build && cd ../frontend/ && npm run build && cp -r build ../backend",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly logs"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "4.1",
+    "mongoose": "^7.1.1",
+    "mongoose-unique-validator": "^4.0.0",
+    "node-mailjet": "^6.0.2",
+    "openai": "^3.2.1",
+    "twilio": "^4.11.1",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

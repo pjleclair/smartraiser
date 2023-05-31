@@ -1,0 +1,14 @@
+{
+  "short_name": "SmartRaiser",
+  "name": "SmartRaiser.ai",
+  "icons": [
+    {
+      "src": "vote-icon.svg",
+      "sizes": "any"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

@@ -1,0 +1,18 @@
+.notification {
+    padding: 1rem;
+    border: 1px solid;
+    background-color: #000000;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    top: 75%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .notification {
+        left: 50%;
+    }
+}

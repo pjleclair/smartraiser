@@ -1,0 +1,25 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(47, 51, 54);
+    border-bottom-style: solid;
+}
+
+h1 span {
+    color: #8CFC86;
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .header,h1 {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
