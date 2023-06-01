@@ -10,10 +10,10 @@ const userSchema = new mongoose.Schema({
     },
     name: String,
     passwordHash: String,
-    configurations: [
+    lists: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Configuration'
+        ref: 'List'
       }
     ]
 });

@@ -7,8 +7,9 @@ const middleware = require('./utils/middleware');
 require('dotenv').config();
 
 //import routers
-const usersRouter = require('./controllers/users');
 const configRouter = require('./controllers/configurations');
+const usersRouter = require('./controllers/users');
+const listRouter = require('./controllers/lists');
 const uploadRouter = require('./controllers/upload');
 const loginRouter = require('./controllers/login');
 
@@ -22,8 +23,9 @@ app.use(express.static('build'));
 app.use(cors());
 app.use(fileUpload());
 app.use(middleware.tokenExtractor);
-app.use('/api/users',usersRouter);
 app.use('/api/configurations',configRouter);
+app.use('/api/users',usersRouter);
+app.use('/api/lists',listRouter);
 app.use('/api/upload',uploadRouter);
 app.use('/api/login',loginRouter);
 

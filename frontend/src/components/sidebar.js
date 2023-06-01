@@ -2,6 +2,7 @@ import './sidebar.css';
 import homeImg from '../images/home-dark.svg';
 import configImg from '../images/config-dark.svg';
 import processImg from '../images/process-dark.svg';
+import listImg from '../images/list-dark.svg'
 
 const Sidebar = ({ toggleComponent }) => {
   const vw = window.innerWidth;
@@ -12,6 +13,12 @@ const Sidebar = ({ toggleComponent }) => {
       {/* <button onClick={() => toggleComponent('configurations')}>Config</button> */}
       <img id='img' src={configImg} alt='configurations' value='configurations'
         onClick={() => toggleComponent('configurations')}
+      />
+    </li>
+
+    <li>
+      <img id='img' src={listImg} alt='lists' value='lists'
+        onClick={() => toggleComponent('lists')}
       />
     </li>
     <li>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import Header from './components/header';
+import Lists from './components/lists.js';
 import Configurations from './components/configurations.js';
 import FileProcessor from './components/fileprocessor.js';
 import Home from './components/home.js'
@@ -61,12 +62,14 @@ const App = () => {
   };
 
   const renderActiveComponent = () => {
-    if (activeComponent === 'configurations') {
-      return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
+    if (activeComponent === 'lists') {
+      return <Lists onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
     } else if (activeComponent === 'fileProcessor') {
       return <FileProcessor token={token}/>;
     } else if (activeComponent === 'home') {
       return <Home userName={user.name}/>;
+    } else if (activeComponent === 'configurations') {
+      return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>
     }
   };
 
@@ -82,6 +85,7 @@ const App = () => {
       const worksheet = workbook.Sheets[sheetName];
 
       const parsedData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      console.log(parsedData)
       setJsonData(parsedData);
     };
 
@@ -116,7 +120,7 @@ const App = () => {
         <Sidebar toggleComponent={toggleComponent} />
         <div className="content">
         {(notifMessage && isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
-          <Header />
+          <Header toggleComponent={toggleComponent}/>
           <div className='main-container'>
             <div className="main">{renderActiveComponent()}</div>
           </div>

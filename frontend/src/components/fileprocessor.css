@@ -74,8 +74,11 @@
     flex-direction: column;
 }
 
-input {
+.processor-container input {
     width: 90%;
+}
+
+input {
     padding: 5px 12px;
     font-size: 14px;
     line-height: 20px;
@@ -117,7 +120,7 @@ input:focus {
         width: 85%;
     }
     .gpt-container {
-        width: fit-content;
+        width: 90%;
     }
     .upload-container {
         display: flex;

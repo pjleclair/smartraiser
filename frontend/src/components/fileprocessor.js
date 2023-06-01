@@ -5,7 +5,7 @@ import Notification from './notification'
 
 const FileProcessor = ({token}) => {
   const [file, setFile] = useState(null);
-  const [configurations, setConfigurations] = useState([]);
+  const [lists, setLists] = useState([]);
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
   const [uploadMsg, setUploadMsg] = useState(null);
   const [gptArray, setGptArray] = useState([])
@@ -16,7 +16,7 @@ const FileProcessor = ({token}) => {
   const [deliveryMethod, setDeliveryMethod] = useState("email")
 
   useEffect(() => {
-    fetchConfigurations();
+    fetchLists();
   }, []);
 
   useEffect(()=> {
@@ -27,24 +27,24 @@ const FileProcessor = ({token}) => {
     }
   },[uploadMsg])
 
-  const fetchConfigurations = () => {
+  const fetchLists = () => {
       const config = {
         headers: {
           Authorization: token
         }
       }
-      axios.get('/api/configurations/',config)
+      axios.get('/api/lists/',config)
       .then((response) => {
-        setConfigurations(response.data)
+        setLists(response.data)
       })
       .catch((error) => {
-        console.log({msg: 'Error fetching configurations', color: "#CF6679"});
+        console.log({msg: 'Error fetching lists', color: "#CF6679"});
     });
   };
 
   const handleConfigurationSelect = (event) => {
     const selectedConfigId = event.target.value;
-    const selectedConfig = configurations.find((config) => config._id === selectedConfigId);
+    const selectedConfig = lists.find((config) => config._id === selectedConfigId);
     setSelectedConfiguration(selectedConfig);
   };
 
@@ -109,24 +109,6 @@ const FileProcessor = ({token}) => {
     <div className='processor-container'>
       {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
       <h1 style={{color: "#FFFFFF"}}>File Processor</h1>
-      <div className='config-select-container'>
-        <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
-          {configurations && configurations.length > 0 ? (
-            <div className='select'>
-              <select onChange={handleConfigurationSelect}>
-                <option value="">Select Configuration</option>
-                {configurations.map((config) => (
-                  <option key={config._id} value={config._id}>
-                    {config.name}
-                  </option>
-                ))}
-              </select>
-              <span className='focus'></span>
-            </div>
-          ) : (
-            <p className='no-configs'>No configurations found.</p>
-          )}
-      </div>
       <div className='gpt-container'>
         <h2 style={{color: "#8CFC86"}}>GPT Details:</h2>
         <div className='config-container'>
@@ -149,9 +131,23 @@ const FileProcessor = ({token}) => {
         </div>
         <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '100%', margin: '1rem'}}></div>
         <div className='upload-container'>
-          <div className='file-container'>
-            <h2 style={{color: "#8CFC86"}}>Upload File:</h2>
-            <input id='file' type="file" accept=".xlsx,.xls" onChange={handleFileUpload} />
+          <div className='config-select-container'>
+            <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select List:</h2>
+            {lists && lists.length > 0 ? (
+              <div className='select'>
+                <select onChange={handleConfigurationSelect}>
+                  <option value="">Select List</option>
+                  {lists.map((config) => (
+                    <option key={config._id} value={config._id}>
+                      {config.name}
+                    </option>
+                  ))}
+                </select>
+                <span className='focus'></span>
+              </div>
+            ) : (
+              <p className='no-configs'>No configurations found.</p>
+            )}
           </div>
           <div className='delivery-container'>
             <h2 style={{color: "#8CFC86"}}>Delivery Method:</h2>
