@@ -136,6 +136,7 @@ const App = () => {
                 type='text'
                 value={username}
                 name='username'
+                autoCapitalize='off'
                 onChange={({target})=>setUsername(target.value)}
               />
             </div>
