@@ -175,12 +175,6 @@ const FileProcessor = ({token}) => {
     setUploadMsg({msg:'Template Selected',color:'#03DAC5'})
   }
 
-  const clearTemplate = () => {
-    setSelectedIndex(null)
-    setSelectedTemplate(null)
-  }
-
-  let style;
 
   return (
     <div className='processor-container'>
@@ -273,12 +267,12 @@ const FileProcessor = ({token}) => {
         <button className='upload-button' onClick={handleUpload}>Upload</button>
         <br/>
         {((gptArray)&&(gptArray.length > 0)) && (
-          <div className='gpt-array' onClick={() => clearTemplate()}>
+          <div className='gpt-array'>
             <h1>Select a Template:</h1>
               {gptArray.map((message,i) => {
-              if (selectedIndex === i) {style={borderWidth:'2px',borderColor:'#8cfc86'}}
-              else {style={borderColor:'#ffffff',borderWidth:'1px'}}
-              return <p className='gpt' style={style} onClick={() => handleTemplateSelect(i)} id={i} key={i}
+                let classname;
+                selectedIndex === i ? classname = 'gpt-selected' : classname = 'gpt'
+              return <p className={classname} onClick={() => handleTemplateSelect(i)} id={i} key={i}
               dangerouslySetInnerHTML={{__html: message.content.trim()}}></p>
             })}
           </div>

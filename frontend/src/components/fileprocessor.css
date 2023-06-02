@@ -68,7 +68,13 @@
 
 }
 
-.gpt:hover {
+.gpt-selected {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #8cfc86;
+}
+
+.gpt:hover, .gpt-selected:hover {
     cursor: pointer;
     border-color: #8cfc86;
     border-width: 2px;
