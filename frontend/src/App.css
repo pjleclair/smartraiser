@@ -23,20 +23,22 @@ input[type="text"], input[type="password"] {
   position: relative;
 }
 
+.main {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 @media (max-width: 600px) {
   .content {
     padding: 0;
     text-align: center;
   }
-}
-
-.main {
-  flex: 1;
-  padding: 1rem;
-  width: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  .main {
+    width: 80%;
+  }
 }
 
 .main-container::-webkit-scrollbar {

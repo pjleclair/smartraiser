@@ -12,6 +12,7 @@ const usersRouter = require('./controllers/users');
 const listRouter = require('./controllers/lists');
 const uploadRouter = require('./controllers/upload');
 const loginRouter = require('./controllers/login');
+const gptRouter = require('./controllers/gpt');
 
 //config server
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/users',usersRouter);
 app.use('/api/lists',listRouter);
 app.use('/api/upload',uploadRouter);
 app.use('/api/login',loginRouter);
+app.use('/api/gpt',gptRouter)
 
 // Start the server
 app.listen(port, () => {

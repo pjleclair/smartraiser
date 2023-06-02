@@ -5,6 +5,7 @@ import homeImg from '../images/home-dark.svg';
 import configImg from '../images/config-dark.svg';
 import listImg from '../images/list-dark.svg';
 import processImg from '../images/process-dark.svg';
+import voteImg from '../images/vote-icon.svg'
 
 const Header = ({toggleComponent}) => {
   return (
@@ -31,7 +32,7 @@ const Header = ({toggleComponent}) => {
             />
         </li>
       </ul>
-      <a href="https://app.smartraiser.ai"><h1>Smart<span>Raiser</span>.ai</h1></a>
+      <a href="https://app.smartraiser.ai"><h1>Smart<span>Raiser</span>.ai</h1><img id='logo' alt='logo' src={voteImg}/></a>
     </header>
   );
 };

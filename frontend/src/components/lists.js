@@ -4,24 +4,8 @@ import './lists.css'; // Assuming you have a corresponding CSS file for styling
 import Notification from './notification'
 
 const Lists = ({ onFileUpload, jsonData, token }) => {
-  const [columnMappings, setColumnMappings] = useState({});
-  const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
   const [updateMsg, setUpdateMsg] = useState(null);
-  const [configurations, setConfigurations] = useState([])
-  const [selectedConfiguration, setSelectedConfiguration] = useState({name:''})
-
-  useEffect(() => {
-    if (jsonData && jsonData.length > 0) {
-      setSampleData(jsonData[0]);
-      setColumnMappings(
-        Object.keys(jsonData[0]).reduce((acc, key, index) => {
-          acc[index] = '';
-          return acc;
-        }, {})
-      );
-    }
-  }, [jsonData]);
 
   useEffect(()=> {
     if (updateMsg !== "") {
@@ -58,7 +42,7 @@ const Lists = ({ onFileUpload, jsonData, token }) => {
   };
 
   return (
-    <div className="configurations">
+    <div className="lists">
       {(updateMsg) && <Notification message={updateMsg.msg} msgColor={updateMsg.color}/>}
       <h1 style={{color: "#FFFFFF"}}>Lists</h1>
       <div className='select-config-container'>
@@ -67,7 +51,7 @@ const Lists = ({ onFileUpload, jsonData, token }) => {
           <input type="file" onChange={onFileUpload} />
           {jsonData && jsonData.length > 0 && (
             <div className='list-info'>
-              <div style={{display:'flex', gap:'1rem',width:'100%',justifyContent:'center',alignItems:'center'}}>
+              <div className='list-name-container'>
                 <h2 style={{display:'flex',width:'fit-content'}}>List name:</h2>
                 <input type='text' placeholder='Example List Name' onChange={handleInputChange} />
                 <button onClick={()=>saveList(name,jsonData)}>Save List</button>
@@ -75,17 +59,18 @@ const Lists = ({ onFileUpload, jsonData, token }) => {
               <div className="list-container" style={{
                 display: 'grid',
                 gridTemplateRows: `repeat(${jsonData.length},1fr)`,
+                justifyContent: 'center'
               }}>
                   {
                     jsonData.map((obj,i) => {
-                      return (<div key={obj} style={{
+                      return (<div className='row' key={obj} style={{
                         display: 'grid',
-                        gridTemplateColumns: `repeat(${jsonData[0].length},1fr)`
+                        gridTemplateColumns: `repeat(${jsonData[0].length},10rem)`,
                       }}>
                         {jsonData[i].map((obj) => {
-                          let style;
+                          let style = {border: '1px solid', padding:'.5rem',overflowX:'scroll'};
                           if (i === 0) {
-                            style = {fontWeight:'bolder',color:'#8CFC86',marginBottom:'.5rem'}
+                            style = {...style,fontWeight:'bolder',color:'#8CFC86'}
                           }
                           return (<div key={obj} style = {style}>
                             {obj}

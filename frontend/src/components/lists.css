@@ -1,14 +1,24 @@
-.configurations {
+.lists {
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 100%;
-
+    width: 90%;
 }
 
 .list-container div {
     display: grid;
+}
+
+.list-container div::-webkit-scrollbar {
+    display: none;
+}
+
+.list-name-container {
+    display: flex;
+    gap: 1rem;
     width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 .configurations h1 {
@@ -28,7 +38,7 @@
     margin: 1rem;
     border-radius: 20px;
     border: 1px solid rgb(47, 51, 54);
-    width: 90%;
+    width: 100%;
 }
 
 .config-update-container {
@@ -40,6 +50,13 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    margin: 1rem;
+    width: 100%;
+}
+
+.list-container {
+    overflow-x: scroll;
+    width: 100%;
 }
 
 .list-info input {
@@ -58,11 +75,12 @@
     border: 1px solid;
 }
 
-.upload-config-container, .update-config-container {
+.upload-config-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    width: 100%;
 }
 
 #divider {
@@ -72,6 +90,9 @@
 }
 
 @media (max-width: 600px) {
+    .lists {
+        width: 80%;
+    }
     .config-update-container {
         flex-direction: column;
         align-items: center;
@@ -80,6 +101,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 90%;
+    }
+    .list-name-container {
+        flex-direction: column;
+        margin-bottom: 1rem;
     }
 
     .upload-config-container, .update-config-container {
@@ -98,5 +124,8 @@
     }
     #mobile {
         margin-bottom: 5rem;
+    }
+    .row {
+        width: 10rem;
     }
 }
