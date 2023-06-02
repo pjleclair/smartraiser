@@ -12,6 +12,7 @@ const templateSchema = new mongoose.Schema({
     orgName: String,
     narrative: String,
     donateLink: String,
+    intendedDeliveryMethod: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

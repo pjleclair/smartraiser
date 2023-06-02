@@ -24,12 +24,13 @@ mongoose
 templateRouter.post('/', userExtractor, async (req, res) => {
     try {
       const name = req.body.templateName;
-      const template = req.body.templateObj.template;
+      const template = req.body.templateObj.selectedTemplate;
 
       const campaignDesc = req.body.templateObj.campaignDesc;
       const orgName = req.body.templateObj.orgName;
       const narrative = req.body.templateObj.narrative;
       const donateLink = req.body.templateObj.donateLink;
+      const intendedDeliveryMethod = req.body.templateObj.intendedDeliveryMethod;
 
       const decodedToken = jwt.verify(req.token, process.env.SECRET)
       if (!decodedToken.id) {
@@ -44,7 +45,7 @@ templateRouter.post('/', userExtractor, async (req, res) => {
       }
   
       // Save the new configuration
-      const newTemplate = new Template({ name, template, user: user._id, campaignDesc, orgName, narrative, donateLink });
+      const newTemplate = new Template({ name, template, user: user._id, campaignDesc, orgName, narrative, donateLink, intendedDeliveryMethod });
       await newTemplate.save();
 
       user.templates = user.templates.concat(newTemplate._id)

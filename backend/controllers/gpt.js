@@ -23,14 +23,19 @@ gptRouter.post('/', async (req, res) => {
     const orgName = req.body.orgName;
     const narrative = req.body.narrative;
     const donateLink = req.body.donateLink;
+    const intendedDeliveryMethod = req.body.intendedDeliveryMethod;
 
     //make API call to OpenAI
     let msgArray = new Array(2).fill(0);
     try {
         const gptArray = await Promise.all(msgArray.map( async (obj,i)=> {
+            let msg = [{role: "user", content: `Pretend you are working for a ${campaignDesc} campaign named "${orgName}". Compose JUST the body of a compelling fundraising email for a ${campaignDesc} campaign named "${orgName}" targeting US citizens, with the goal of encouraging donations. Tailor the content based on ${narrative} and consider the recipient's interests and values. Include a shortened hyperlink (${donateLink}) for easy donation. Do NOT open your response with a salutation addressing your recipient or audience, and do NOT sign the message. Your response should be HTML.`}]
+            if (intendedDeliveryMethod === 'text') {
+                msg = [{role: "user", content: `Pretend you are working for a ${campaignDesc} campaign named "${orgName}". Compose a compelling fundraising text message for a ${campaignDesc} campaign named "${orgName}" targeting US citizens, with the goal of encouraging donations. Tailor the content based on ${narrative} and consider the recipient's interests and values. Include a shortened hyperlink (${donateLink}) for easy donation. Do NOT open your response with a salutation addressing your recipient or audience, and do NOT sign the message. Your response should be close to 160 characters without exceeding that limit.`}]
+            }
             const completion = await openai.createChatCompletion({
                 model: "gpt-3.5-turbo",
-                messages: [{role: "user", content: `Pretend you are working for a ${campaignDesc} campaign named "${orgName}". Compose JUST the body of a compelling fundraising message for a ${campaignDesc} campaign named "${orgName}" targeting US citizens, with the goal of encouraging donations. Tailor the content based on ${narrative} and consider the recipient's interests and values. Include a shortened hyperlink (${donateLink}) for easy donation. Do NOT open your response with a salutation addressing your recipient or audience, and do NOT sign the message. Your response should be HTML.`}],
+                messages: msg,
             })
 
             return completion.data.choices[0].message;

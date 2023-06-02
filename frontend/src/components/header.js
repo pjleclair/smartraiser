@@ -38,7 +38,7 @@ const Header = ({toggleComponent}) => {
             />
         </li>
       </ul>
-      <a href="https://app.smartraiser.ai"><h1>Smart<span>Raiser</span>.ai</h1><img id='logo' alt='logo' src={voteImg}/></a>
+      <a href="https://app.smartraiser.ai"><img id='logo' alt='logo' src={voteImg}/></a>
     </header>
   );
 };

@@ -12,7 +12,7 @@ const Templates = ({token}) => {
     const [campaignDesc, setCampaignDesc] = useState("")
     const [narrative, setNarrative] = useState("")
     const [donateLink, setDonateLink] = useState("")
-    const [deliveryMethod, setDeliveryMethod] = useState("email")
+    const [intendedDeliveryMethod, setIntendedDeliveryMethod] = useState("email")
     const [selectedIndex, setSelectedIndex] = useState(null)
     const [selectedTemplate, setSelectedTemplate] = useState(null)
     const [templateName, setTemplateName] = useState(null)
@@ -36,6 +36,7 @@ const Templates = ({token}) => {
         formData.append('orgName', orgName);
         formData.append('narrative', narrative);
         formData.append('donateLink', donateLink);
+        formData.append('intendedDeliveryMethod', intendedDeliveryMethod);
     
         const config = {
           headers: {
@@ -74,9 +75,9 @@ const Templates = ({token}) => {
         setTemplateName(e.target.value)
     }
 
-    const handleDeliveryMethodChange = (e) => {
-    console.log(e.target.value)
-    setDeliveryMethod(e.target.value)
+    const handleIntendedDeliveryMethodChange = (e) => {
+        console.log(e.target.value)
+        setIntendedDeliveryMethod(e.target.value)
     }
 
     const handleTemplateSelect = (i) => {
@@ -91,7 +92,8 @@ const Templates = ({token}) => {
             campaignDesc,
             donateLink,
             narrative,
-            selectedTemplate
+            selectedTemplate,
+            intendedDeliveryMethod
         }
         const template = {
             templateName,
@@ -134,6 +136,19 @@ const Templates = ({token}) => {
             <div id='gpt-field'>
               <h3>Donate Link:</h3>
               <input type='text' onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
+            </div>
+            <div className='delivery-container'>
+              <h2 style={{color: "#8CFC86"}}>Intended Delivery Method:</h2>
+              <div className='radio-container'>
+                <div id='radio'>
+                  <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='text' checked={intendedDeliveryMethod === 'text'} value='text'/>
+                  <label>Text</label>
+                </div>
+                <div id='radio'>
+                  <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='email' checked={intendedDeliveryMethod === 'email'} value='email'/>
+                  <label>Email</label>
+                </div>
+              </div>
             </div>
             </div>
             <button onClick={handleGPT}>Draft Template</button>

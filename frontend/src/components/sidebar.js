@@ -43,13 +43,18 @@ const Sidebar = ({ toggleComponent }) => {
     renderButtons = 
     <ul>
       <li>
-        <img id='img' src={homeImg} alt='home' value='home'
-          onClick={() => toggleComponent('home')}
+        <img id='img' src={listImg} alt='lists' value='lists'
+          onClick={() => toggleComponent('lists')}
         />
       </li>
       <li>
         <img id='img' src={configImg} alt='configurations' value='configurations'
           onClick={() => toggleComponent('configurations')}
+        />
+      </li>
+      <li>
+        <img id='img' src={homeImg} alt='home' value='home'
+          onClick={() => toggleComponent('home')}
         />
       </li>
       <li>
