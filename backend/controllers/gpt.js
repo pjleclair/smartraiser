@@ -11,7 +11,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
   
 gptRouter.post('/', async (req, res) => {
-    console.log('test')
     if (!req.body.campaignDesc || !req.body.orgName || !req.body.narrative) {
         return res.status(400).json({ error: 'Invalid request' });
     }

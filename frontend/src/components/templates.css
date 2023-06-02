@@ -1,0 +1,13 @@
+.template-save-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.gpt-container input {
+    width: 90%;
+}
+
+#name {
+    width: auto;
+}

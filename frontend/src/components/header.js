@@ -6,6 +6,7 @@ import configImg from '../images/config-dark.svg';
 import listImg from '../images/list-dark.svg';
 import processImg from '../images/process-dark.svg';
 import voteImg from '../images/vote-icon.svg'
+import templateImg from '../images/template-dark.svg';
 
 const Header = ({toggleComponent}) => {
   return (
@@ -24,6 +25,11 @@ const Header = ({toggleComponent}) => {
         <li>
           <img id='img' src={listImg} alt='lists' value='lists'
             onClick={() => toggleComponent('lists')}
+          />
+        </li>
+        <li>
+          <img id='ai' src={templateImg} alt='templates' value='templates'
+            onClick={() => toggleComponent('templates')}
           />
         </li>
         <li>

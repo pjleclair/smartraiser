@@ -8,6 +8,7 @@ import FileProcessor from './components/fileprocessor.js';
 import Home from './components/home.js'
 import Sidebar from './components/sidebar.js';
 import Notification from './components/notification.js'
+import Templates from './components/templates.js'
 
 import loginService from './services/loginService';
 
@@ -70,6 +71,8 @@ const App = () => {
       return <Home userName={user.name}/>;
     } else if (activeComponent === 'configurations') {
       return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>
+    } else if (activeComponent === 'templates') {
+      return <Templates token={token}/>
     }
   };
 

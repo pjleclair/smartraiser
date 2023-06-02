@@ -103,3 +103,10 @@
   border-color: #03DAC5;
   background-color: transparent;
 }
+
+.sidebar #ai:hover {
+  border: 1px solid;
+  border-color: #03DAC5;
+  background-color: transparent;
+  border-radius: 20px;
+}

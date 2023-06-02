@@ -3,6 +3,7 @@ import homeImg from '../images/home-dark.svg';
 import configImg from '../images/config-dark.svg';
 import processImg from '../images/process-dark.svg';
 import listImg from '../images/list-dark.svg'
+import templateImg from '../images/template-dark.svg';
 
 const Sidebar = ({ toggleComponent }) => {
   const vw = window.innerWidth;
@@ -27,6 +28,11 @@ const Sidebar = ({ toggleComponent }) => {
       />
     </li>
     <li>
+      <img id='ai' src={templateImg} alt='templates' value='templates'
+        onClick={() => toggleComponent('templates')}
+      />
+    </li>
+    <li>
       <img id='img' src={processImg} alt='process' value='fileProcessor'
           onClick={() => toggleComponent('fileProcessor')}
         />
@@ -44,6 +50,11 @@ const Sidebar = ({ toggleComponent }) => {
       <li>
         <img id='img' src={configImg} alt='configurations' value='configurations'
           onClick={() => toggleComponent('configurations')}
+        />
+      </li>
+      <li>
+        <img id='ai' src={templateImg} alt='templates' value='templates'
+          onClick={() => toggleComponent('templates')}
         />
       </li>
       <li>

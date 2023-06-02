@@ -35,14 +35,15 @@ uploadRouter.post('/', (req, res) => {
     if (!decodedToken.id) {
         res.status(401).json({ error: 'token invalid' })
     }
-
+    console.log(JSON.parse(req.body.template))
     const configuration = JSON.parse(req.body.configuration);
     const list = JSON.parse(req.body.list);
-    const template = req.body.template;
-    const campaignDesc = req.body.campaignDesc;
-    const orgName = req.body.orgName;
-    const narrative = req.body.narrative;
-    const donateLink = req.body.donateLink;
+    const templateObj = JSON.parse(req.body.template);
+    const template = templateObj.template;
+    const campaignDesc = templateObj.campaignDesc;
+    const orgName = templateObj.orgName;
+    const narrative = templateObj.narrative;
+    const donateLink = templateObj.donateLink;
     const deliveryMethod = req.body.deliveryMethod;
 
     // Combine the list data with the configuration

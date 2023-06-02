@@ -15,6 +15,18 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'List'
       }
+    ],
+    configurations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Configuration'
+      }
+    ],
+    templates: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Template'
+      }
     ]
 });
 
