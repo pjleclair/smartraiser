@@ -7,7 +7,6 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 
 const FileProcessor = ({token}) => {
-  const [file, setFile] = useState(null);
   const [lists, setLists] = useState([]);
   const [selectedList, setSelectedList] = useState(null)
   const [uploadMsg, setUploadMsg] = useState(null);
@@ -22,9 +21,24 @@ const FileProcessor = ({token}) => {
   const [value, onChange] = useState(new Date());
   const [selectedCampaignNav, setSelectedCampaignNav] = useState('new')
   const [selectedTemplate, setSelectedTemplate] = useState(null)
+  const [selectedIndex, setSelectedIndex] = useState(null)
+
+  useEffect(()=> {
+    if (uploadMsg !== "") {
+      setTimeout(() => {
+        setUploadMsg("")
+      }, 5000);
+    }
+  },[uploadMsg])
 
   useEffect(() => {
     fetchConfigurations();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    fetchLists();
+    // eslint-disable-next-line
   }, []);
 
   const fetchConfigurations = () => {
@@ -42,17 +56,6 @@ const FileProcessor = ({token}) => {
     });
   };
 
-  useEffect(() => {
-    fetchLists();
-  }, []);
-
-  useEffect(()=> {
-    if (uploadMsg !== "") {
-      setTimeout(() => {
-        setUploadMsg("")
-      }, 5000);
-    }
-  },[uploadMsg])
 
   const fetchLists = () => {
       const config = {
@@ -82,7 +85,7 @@ const FileProcessor = ({token}) => {
   };
 
   const handleUpload = async () => {
-    if (!selectedList || !selectedConfiguration) {
+    if (!selectedList || !selectedConfiguration || !selectedTemplate) {
       return;
     }
 
@@ -95,6 +98,7 @@ const FileProcessor = ({token}) => {
     formData.append('narrative', narrative);
     formData.append('donateLink', donateLink);
     formData.append('deliveryMethod', deliveryMethod);
+    formData.append('template',selectedTemplate);
 
     const config = {
       headers: {
@@ -105,7 +109,6 @@ const FileProcessor = ({token}) => {
     try {
       const response = await axios.post('/api/upload/', formData, config);
       setUploadMsg({msg: response.data.message, color: '#03DAC5'});
-      setGptArray(response.data.gpt);
       // Perform further processing or handle the server response here
     } catch (error) {
       console.log('Error uploading file:', error);
@@ -167,9 +170,17 @@ const FileProcessor = ({token}) => {
   }
 
   const handleTemplateSelect = (i) => {
+    setSelectedIndex(i)
     setSelectedTemplate(gptArray[i].content)
     setUploadMsg({msg:'Template Selected',color:'#03DAC5'})
   }
+
+  const clearTemplate = () => {
+    setSelectedIndex(null)
+    setSelectedTemplate(null)
+  }
+
+  let style;
 
   return (
     <div className='processor-container'>
@@ -185,19 +196,19 @@ const FileProcessor = ({token}) => {
           <div className='config-container'>
             <div id='gpt-field'>
               <h3>Campaign description:</h3>
-              <input onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
+              <input type='text' onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
             </div>
             <div id='gpt-field'>
               <h3>Organization name:</h3>
-              <input onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
+              <input type='text' onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
             </div>
             <div id='gpt-field'>
               <h3>Narrative:</h3>
-              <input onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
+              <input type='text' onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
             </div>
             <div id='gpt-field'>
               <h3>Donate Link:</h3>
-              <input onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
+              <input type='text' onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
             </div>
           </div>
           <button onClick={handleGPT}>Draft Campaign</button>
@@ -262,10 +273,12 @@ const FileProcessor = ({token}) => {
         <button className='upload-button' onClick={handleUpload}>Upload</button>
         <br/>
         {((gptArray)&&(gptArray.length > 0)) && (
-          <div className='gpt-array'>
-            <h1>Generated Content:</h1>
+          <div className='gpt-array' onClick={() => clearTemplate()}>
+            <h1>Select a Template:</h1>
               {gptArray.map((message,i) => {
-              return <p className='gpt' onClick={() => handleTemplateSelect(i)} id={i} key={i}
+              if (selectedIndex === i) {style={borderWidth:'2px',borderColor:'#8cfc86'}}
+              else {style={borderColor:'#ffffff',borderWidth:'1px'}}
+              return <p className='gpt' style={style} onClick={() => handleTemplateSelect(i)} id={i} key={i}
               dangerouslySetInnerHTML={{__html: message.content.trim()}}></p>
             })}
           </div>

@@ -47,7 +47,7 @@ const Lists = ({ onFileUpload, jsonData, token }) => {
       <h1 style={{color: "#FFFFFF"}}>Lists</h1>
       <div className='select-config-container'>
         <div className='upload-config-container'>
-          <p style={{width: 'fit-content', margin: '0'}}>Upload a file below to create a list:</p>
+          <p style={{width: 'fit-content', margin: '0', color:'#8cfc86'}}>Upload a file below to create a list:</p>
           <input type="file" onChange={onFileUpload} />
           {jsonData && jsonData.length > 0 && (
             <div className='list-info'>
