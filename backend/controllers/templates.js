@@ -8,7 +8,7 @@ const Template = require('../models/template');
 const User = require('../models/user');
 
 // MongoDB configuration
-const MONGO_URI = 'mongodb+srv://fullstack:fs0pen@cluster0.00quc3x.mongodb.net/?retryWrites=true&w=majority';
+const MONGO_URI = process.env.MONGO;
 
 // Connect to MongoDB
 mongoose

@@ -223,7 +223,7 @@ const FileProcessor = ({token}) => {
             </div>
             <div className='scheduler-container'>
               <h2 style={{color: "#8CFC86"}}>Select a Date & Time:</h2>
-              <DateTimePicker onChange={onChange} value={value} minDateTime={dayjs()} sx={{
+              <DateTimePicker onChange={(i)=>onChange(i.toISOString())} value={value} minDateTime={dayjs().minute(dayjs().minute()+15)} sx={{
                 '& .MuiOutlinedInput-root': {
                   color: '#fff',
                   '&.Mui-focused fieldset': {

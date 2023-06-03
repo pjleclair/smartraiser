@@ -4,6 +4,10 @@ const axios = require('axios');
 const XLSX = require('xlsx');
 const Mailjet = require('node-mailjet');
 const jwt = require('jsonwebtoken')
+const {Agenda} = require('@hokify/agenda')
+
+//Agenda Job Scheduling Configuration
+const agenda = new Agenda({ db: { address: process.env.MONGO } });
 
 //OpenAI Configuration
 const headers = {
@@ -35,7 +39,6 @@ uploadRouter.post('/', (req, res) => {
     if (!decodedToken.id) {
         res.status(401).json({ error: 'token invalid' })
     }
-    console.log(JSON.parse(req.body.template))
     const configuration = JSON.parse(req.body.configuration);
     const list = JSON.parse(req.body.list);
     const templateObj = JSON.parse(req.body.template);
@@ -45,6 +48,9 @@ uploadRouter.post('/', (req, res) => {
     const narrative = templateObj.narrative;
     const donateLink = templateObj.donateLink;
     const deliveryMethod = req.body.deliveryMethod;
+    const date = req.body.date;
+
+    console.log(date === 'null')
 
     // Combine the list data with the configuration
     const combinedData = list.list.map((row) => {
@@ -76,53 +82,118 @@ uploadRouter.post('/', (req, res) => {
             if(email === undefined) {
                 console.log('no email! delivery aborted')
             } else {
-                const request = mailjet
-                .post('send', { version: 'v3.1' })
-                .request({
-                    Messages: [
-                    {
-                        From: {
-                        Email: "info@smartraiser.ai",
-                        Name: "SmartRaiser"
-                        },
-                        To: [
-                        {
-                            Email: email,
-                            Name: name
-                        }
-                        ],
-                        TemplateID: 4847744,
-                        TemplateLanguage: true,
-                        Subject: `${orgName} Needs Your Help!`,
-                        Variables: {
-                            msg: template,
-                            orgName: orgName,
-                            donateLink: donateLink
-                        },
-                        TemplateErrorReporting: {
-                            Email: "phil@smartraiser.ai",
-                            Name: "Phil LeClair"
-                        }
-                    }
-                    ]
-                })
-
-            request
-            .then((result) => {
-                console.log(result.body)
-            })
-            .catch((err) => {
-                console.log(err.statusCode)
-            })
+                try {
+                    if (date !== 'null') {
+                        agenda.define('send email campaign', async job => {
+                            await mailjet
+                            .post('send', { version: 'v3.1' })
+                            .request({
+                                Messages: [
+                                {
+                                    From: {
+                                    Email: "info@smartraiser.ai",
+                                    Name: "SmartRaiser"
+                                    },
+                                    To: [
+                                    {
+                                        Email: email,
+                                        Name: name
+                                    }
+                                    ],
+                                    TemplateID: 4847744,
+                                    TemplateLanguage: true,
+                                    Subject: `${orgName} Needs Your Help!`,
+                                    Variables: {
+                                        msg: template,
+                                        orgName: orgName,
+                                        donateLink: donateLink
+                                    },
+                                    TemplateErrorReporting: {
+                                        Email: "phil@smartraiser.ai",
+                                        Name: "Phil LeClair"
+                                    }
+                                }
+                                ]
+                            })
+                            .then((result) => {
+                                console.log(result.body)
+                            })
+                            .catch((err) => {
+                                console.log(err.statusCode)
+                            })
+                        });
+                        (async function () {
+                            await agenda.start();
+                            await agenda.schedule(date, 'send email campaign');
+                        })();
+                    } else {
+                        const request = mailjet
+                            .post('send', { version: 'v3.1' })
+                            .request({
+                                Messages: [
+                                {
+                                    From: {
+                                    Email: "info@smartraiser.ai",
+                                    Name: "SmartRaiser"
+                                    },
+                                    To: [
+                                    {
+                                        Email: email,
+                                        Name: name
+                                    }
+                                    ],
+                                    TemplateID: 4847744,
+                                    TemplateLanguage: true,
+                                    Subject: `${orgName} Needs Your Help!`,
+                                    Variables: {
+                                        msg: template,
+                                        orgName: orgName,
+                                        donateLink: donateLink
+                                    },
+                                    TemplateErrorReporting: {
+                                        Email: "phil@smartraiser.ai",
+                                        Name: "Phil LeClair"
+                                    }
+                                }
+                                ]
+                            })
+                            .then((result) => {
+                                console.log(result.body)
+                            })
+                            .catch((err) => {
+                                console.log(err.statusCode)
+                            })
+                    }                    
+                } catch (err) {
+                    console.log('error sending email:', err)
+                }
             }
         } else if (deliveryMethod === 'text') {
-            const num = obj.phoneNumber.replace(/-/g,'');
+            let num;
+            if (obj.phoneNumber === undefined)
+                return
+            else
+                num = obj.phoneNumber.replace(/-/g,'');
             if(num === undefined || !Number.isInteger(Number(num))) {
                 console.log('no number! delivery aborted')
             } else {
-                client.messages
-                .create({ body: template, from: "+18885459281", to: `+1${num}` })
-                .then(message => console.log(message.sid));
+                try {
+                    if (date !== 'null') {
+                        client.messages
+                        .create({
+                            messagingServiceSid: process.env.TWILIO_MSG_SID, 
+                            body: template, from: "+18885459281", to: `+1${num}`,
+                        sendAt: date, scheduleType: 'fixed' })
+                        .then(message => console.log(message.sid));
+                    } else {
+                        client.messages
+                        .create({ body: template, from: "+18885459281", to: `+1${num}`,
+                        })
+                        .then(message => console.log(message.sid));
+                    }
+                } catch (err) {
+                    console.log('error sending text:', err)
+                }
             }
         }
     })
