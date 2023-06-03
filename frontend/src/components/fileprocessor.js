@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './fileprocessor.css'
 import Notification from './notification'
-import DateTimePicker from 'react-datetime-picker';
-import 'react-datetime-picker/dist/DateTimePicker.css';
-import 'react-calendar/dist/Calendar.css';
+import {DateTimePicker} from '@mui/x-date-pickers/';
+import dayjs from 'dayjs'
 
 const FileProcessor = ({token}) => {
   const [lists, setLists] = useState([]);
@@ -14,7 +13,7 @@ const FileProcessor = ({token}) => {
   const [configurations, setConfigurations] = useState([]);
   const [templates, setTemplates] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
-  const [value, onChange] = useState(new Date());
+  const [value, onChange] = useState(null);
   const [selectedCampaignNav, setSelectedCampaignNav] = useState('new')
   const [selectedTemplate, setSelectedTemplate] = useState(null)
 
@@ -224,7 +223,26 @@ const FileProcessor = ({token}) => {
             </div>
             <div className='scheduler-container'>
               <h2 style={{color: "#8CFC86"}}>Select a Date & Time:</h2>
-              <DateTimePicker onChange={onChange} value={value} disableClock={Boolean(true)}/>
+              <DateTimePicker onChange={onChange} value={value} minDateTime={dayjs()} sx={{
+                '& .MuiOutlinedInput-root': {
+                  color: '#fff',
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#03DAC5'
+                  }
+                },
+                '& .MuiInputBase-input': {
+                  boxShadow: 0,
+                },
+                '& .MuiSvgIcon-root': {
+                  color: '#fff'
+                },
+                '& .MuiSvgIcon-root:hover': {
+                  color: '#03DAC5'
+                },
+                '& .MuiButtonBase-root:hover': {
+                  border: 'none'
+                },
+              }}/>
             </div>
           </div>
         </div>

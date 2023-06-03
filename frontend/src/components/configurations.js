@@ -33,6 +33,7 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
 
   useEffect(()=> {
     fetchConfigurations();
+    //eslint-disable-next-line
   },[])
 
   const fetchConfigurations = () => {

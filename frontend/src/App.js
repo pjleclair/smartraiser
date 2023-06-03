@@ -14,6 +14,9 @@ import loginService from './services/loginService';
 
 import './App.css'
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 var XLSX = require("xlsx");
 
 const App = () => {
@@ -116,48 +119,50 @@ const App = () => {
   }
 
   return (
-    <div>
-      {(notifMessage && !isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
-      {(isLoggedIn) ?
-      (<div className="app">
-        <Sidebar toggleComponent={toggleComponent} />
-        <div className="content">
-        {(notifMessage && isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
-          <Header toggleComponent={toggleComponent}/>
-          <div className='main-container'>
-            <div className="main">{renderActiveComponent()}</div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <div>
+        {(notifMessage && !isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
+        {(isLoggedIn) ?
+        (<div className="app">
+          <Sidebar toggleComponent={toggleComponent} />
+          <div className="content">
+          {(notifMessage && isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
+            <Header toggleComponent={toggleComponent}/>
+            <div className='main-container'>
+              <div className="main">{renderActiveComponent()}</div>
+            </div>
           </div>
-        </div>
-      </div>)
-      : (<div className='login'>
-          <form onSubmit={handleLogin}>
-            <div>
+        </div>)
+        : (<div className='login'>
+            <form onSubmit={handleLogin}>
               <div>
-              username:
+                <div>
+                username:
+                </div>
+                <input 
+                  type='text'
+                  value={username}
+                  name='username'
+                  autoCapitalize='off'
+                  onChange={({target})=>setUsername(target.value)}
+                />
               </div>
-              <input 
-                type='text'
-                value={username}
-                name='username'
-                autoCapitalize='off'
-                onChange={({target})=>setUsername(target.value)}
-              />
-            </div>
-            <div>
               <div>
-              password:
+                <div>
+                password:
+                </div>
+                <input 
+                  type='password'
+                  value={password}
+                  name='password'
+                  onChange={({target})=>setPassword(target.value)}
+                />
               </div>
-              <input 
-                type='password'
-                value={password}
-                name='password'
-                onChange={({target})=>setPassword(target.value)}
-              />
-            </div>
-            <button id='login' type='submit'>Login</button>
-          </form>
-      </div>)}
-    </div>
+              <button id='login' type='submit'>Login</button>
+            </form>
+        </div>)}
+      </div>
+    </LocalizationProvider>
   );
 };
 
