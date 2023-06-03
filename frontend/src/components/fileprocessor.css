@@ -89,7 +89,6 @@
     padding: 1rem;
     border-radius: 20px;
     border: 1px solid rgb(47, 51, 54);
-    margin-top: 3rem;
     width: 60%;
 }
 
@@ -132,43 +131,6 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.react-datetime-picker__wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 0 .5rem;
-}
-
-.react-datetime-picker__wrapper input {
-    box-shadow: none;
-}
-
-.react-datetime-picker__clear-button, .react-datetime-picker__button {
-    align-items: center;
-}
-
-.react-calendar__viewContainer {
-    background-color: #000000;
-}
-
-.react-calendar__navigation {
-    background-color: #000000;
-}
-
-.scheduler-container .react-datetime-picker__button__icon {
-    stroke: #FFFFFF
-}
-
-.scheduler-container .react-datetime-picker__button:enabled:hover .react-datetime-picker__button__icon, .react-datetime-picker__button:enabled:focus .react-datetime-picker__button__icon, .scheduler-container .react-datetime-picker__clear-button.react-datetime-picker__button {
-    stroke: #03DAC5;
-}
-
-.scheduler-container .react-calendar__tile--now {
-    background:rgba(3, 218, 197, .8)
-}
-.scheduler-container .react-calendar__tile--now:enabled:hover {
-    background: #202223
 }
 
 @media (max-width: 600px) {

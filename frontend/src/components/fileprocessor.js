@@ -245,9 +245,9 @@ const FileProcessor = ({token}) => {
               }}/>
             </div>
           </div>
+          <br />
+          <button className='upload-button' onClick={handleUpload}>Upload</button>
         </div>
-        <br />
-        <button className='upload-button' onClick={handleUpload}>Upload</button>
         <div id='mobile'></div>
       </div> : <div>Existing Campaign</div>
       }
