@@ -15,7 +15,6 @@ const FileProcessor = ({token, setUploadMsg}) => {
   const [selectedCampaignNav, setSelectedCampaignNav] = useState('new')
   const [selectedTemplate, setSelectedTemplate] = useState(null)
 
-
   useEffect(() => {
     fetchConfigurations();
     // eslint-disable-next-line
@@ -124,7 +123,6 @@ const FileProcessor = ({token, setUploadMsg}) => {
   };
 
   const handleDeliveryMethodChange = (e) => {
-    console.log(e.target.value)
     setDeliveryMethod(e.target.value)
   }
 

@@ -123,7 +123,7 @@ configRouter.get('/', userExtractor, (req, res) => {
     Configuration.find().populate('user', {username: 1, name: 1})
       .then((configurations) => {
         if (req.user) {
-            const userConfigs = configurations.map((config)=>{
+            const userConfigs = configurations.filter((config)=>{
                 if (config.user._id.toString() === req.user._id.toString())
                     return config
             })

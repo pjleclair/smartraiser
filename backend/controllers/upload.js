@@ -50,8 +50,6 @@ uploadRouter.post('/', (req, res) => {
     const deliveryMethod = req.body.deliveryMethod;
     const date = req.body.date;
 
-    console.log(date === 'null')
-
     // Combine the list data with the configuration
     const combinedData = list.list.map((row) => {
         const combinedRow = {};

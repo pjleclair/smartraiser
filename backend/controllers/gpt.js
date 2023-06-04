@@ -41,10 +41,8 @@ gptRouter.post('/', async (req, res) => {
             return completion.data.choices[0].message;
             
         }))
-        console.log(gptArray)
         res.json({message: "Campaign drafting successful", gpt: gptArray});
     } catch (error) {
-        console.log(error)
         res.json({error: error})
     }
 });

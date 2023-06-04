@@ -124,7 +124,7 @@ listRouter.get('/', userExtractor, (req, res) => {
     List.find().populate('user', {username: 1, name: 1})
       .then((lists) => {
         if (req.user) {
-            const userLists = lists.map((list)=>{
+            const userLists = lists.filter((list)=>{
                 if (list.user._id.toString() === req.user._id.toString())
                     return list
             })

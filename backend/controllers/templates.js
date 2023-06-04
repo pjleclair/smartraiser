@@ -58,25 +58,27 @@ templateRouter.post('/', userExtractor, async (req, res) => {
     }
   });
 
-  templateRouter.get('/', userExtractor, (req, res) => {
-    Template.find().populate('user', {username: 1, name: 1})
-      .then((templates) => {
-        if (req.user) {
-            const userTemplates = templates.map((template)=>{
-                if (template.user._id.toString() === req.user._id.toString())
-                    return template
-            })
-            if (userTemplates[0] === undefined)
-                res.status(500).json({ error: 'Failed to fetch templates' });
-            else
-                res.json(userTemplates)
-        } else {
-            res.json(templates);
-        }
-      })
-      .catch((error) => {
+  templateRouter.get('/', userExtractor, async (req, res) => {
+    try {
+        Template.find().populate('user', {username: 1, name: 1})
+        .then((templates) => {
+          if (req.user) {
+              const userTemplates = templates.filter((template)=>{
+                  if (template.user._id.toString() === req.user._id.toString())
+                      return template
+              })
+              if (userTemplates[0] === undefined) {
+                  res.status(500).json({ error: 'Failed to fetch templates' });
+              } else {
+                  res.json(userTemplates)
+              }
+          } else {
+              res.json(templates);
+          }
+        })
+      } catch (err) {
         res.status(500).json({ error: 'Failed to fetch templates' });
-      });
+      }
   });
 
 module.exports = templateRouter;
