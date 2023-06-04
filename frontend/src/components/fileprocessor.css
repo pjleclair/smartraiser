@@ -133,7 +133,7 @@ input {
 input:focus {
     border-color: #03DAC5;
     outline: none;
-    box-shadow: rgba(3, 218, 197, .8) 0px 0px 0px 5px;
+    box-shadow: rgba(3, 218, 197, .8) 0px 0px 0px 2px;
 }
 
 .scheduler-container {

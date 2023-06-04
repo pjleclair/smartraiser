@@ -15,14 +15,15 @@ const Templates = ({token, setUploadMsg}) => {
     const [intendedDeliveryMethod, setIntendedDeliveryMethod] = useState("email")
     const [selectedIndex, setSelectedIndex] = useState(null)
     const [selectedTemplate, setSelectedTemplate] = useState(null)
-    const [templateName, setTemplateName] = useState(null)
+    const [templateName, setTemplateName] = useState('')
     const [showProgressBar, setShowProgressBar] = useState(false)
 
-    const handleGPT = async () => {
-        setShowProgressBar(true)
+    const handleGPT = async (e) => {
+        e.preventDefault();
         if (!campaignDesc || !orgName || !narrative || !donateLink) {
-          return;
+            return;
         }
+        setShowProgressBar(true)
         const formData = new FormData();
         
         formData.append('campaignDesc', campaignDesc);
@@ -115,38 +116,40 @@ const Templates = ({token, setUploadMsg}) => {
         <div className='template-container'>
         <div className='gpt-container'>
             <h2 style={{color: "#8CFC86"}}>Draft a Template:</h2>
-            <div className='config-container'>
-            <div id='gpt-field'>
-              <h3>Campaign description:</h3>
-              <input type='text' onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
-            </div>
-            <div id='gpt-field'>
-              <h3>Organization name:</h3>
-              <input type='text' onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
-            </div>
-            <div id='gpt-field'>
-              <h3>Narrative:</h3>
-              <input type='text' onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
-            </div>
-            <div id='gpt-field'>
-              <h3>Donate Link:</h3>
-              <input type='text' onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
-            </div>
-            <div className='delivery-container'>
-              <h2 style={{color: "#8CFC86"}}>Intended Delivery Method:</h2>
-              <div className='radio-container'>
-                <div id='radio'>
-                  <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='text' checked={intendedDeliveryMethod === 'text'} value='text'/>
-                  <label>Text</label>
+            <form onSubmit={(e)=>handleGPT(e)}>
+                <div className='config-container'>
+                    <div id='gpt-field'>
+                    <h3>Campaign description:</h3>
+                    <input type='text' required onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
+                    </div>
+                    <div id='gpt-field'>
+                    <h3>Organization name:</h3>
+                    <input type='text' required onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
+                    </div>
+                    <div id='gpt-field'>
+                    <h3>Narrative:</h3>
+                    <input type='text' required onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
+                    </div>
+                    <div id='gpt-field'>
+                    <h3>Donate Link:</h3>
+                    <input type='text' required onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
+                    </div>
                 </div>
-                <div id='radio'>
-                  <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='email' checked={intendedDeliveryMethod === 'email'} value='email'/>
-                  <label>Email</label>
+                <div className='delivery-container'>
+                    <h2 style={{color: "#8CFC86"}}>Intended Delivery Method:</h2>
+                    <div className='radio-container'>
+                        <div id='radio'>
+                        <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='text' checked={intendedDeliveryMethod === 'text'} value='text'/>
+                        <label>Text</label>
+                        </div>
+                        <div id='radio'>
+                        <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='email' checked={intendedDeliveryMethod === 'email'} value='email'/>
+                        <label>Email</label>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-            </div>
-            <button onClick={handleGPT}>Draft Template</button>
+                <button type='submit'>Draft Template</button>
+            </form>
             <br />
             {(showProgressBar) && <CircularProgress color="success" />}
             <br/>
@@ -167,7 +170,7 @@ const Templates = ({token, setUploadMsg}) => {
             </div>
             )}
         </div>
-        </div>
+    </div>
     )
 }
 

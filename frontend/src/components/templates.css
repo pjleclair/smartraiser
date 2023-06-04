@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    width: 100%;
 }
 
 .template-save-container {
@@ -11,8 +12,20 @@
     justify-content: space-around;
 }
 
+.config-container {
+    margin-bottom: 0;
+}
+
+.delivery-container {
+    margin: 2rem 0;
+}
+
 .gpt-container input {
     width: 90%;
+}
+
+.gpt-container form {
+    width: 100%;
 }
 
 #name {
