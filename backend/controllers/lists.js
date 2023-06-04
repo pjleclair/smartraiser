@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
 const listRouter = require('express').Router();
 const {userExtractor} = require('../utils/middleware');
@@ -8,17 +8,17 @@ const List = require('../models/list');
 const User = require('../models/user');
 
 // MongoDB configuration
-const MONGO_URI = process.env.MONGO;
+// const MONGO_URI = process.env.MONGO;
 
 // Connect to MongoDB
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('Error connecting to MongoDB:', error);
-  });
+// mongoose
+//   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => {
+//     console.log('Connected to MongoDB');
+//   })
+//   .catch((error) => {
+//     console.error('Error connecting to MongoDB:', error);
+//   });
 
 // Save configuration endpoint
 listRouter.post('/', userExtractor, async (req, res) => {

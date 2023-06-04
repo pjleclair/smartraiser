@@ -88,7 +88,6 @@ const Lists = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
           </div>
         </div>
         }
-        <div id='mobile'></div>
       </div>
     </div>
     );

@@ -6,50 +6,17 @@ import listImg from '../images/list-dark.svg'
 import templateImg from '../images/template-dark.svg';
 
 const Sidebar = ({ toggleComponent }) => {
-  const vw = window.innerWidth;
 
-  let renderButtons =
-  <ul>
-    <li>
-      {/* <button onClick={() => toggleComponent('configurations')}>Config</button> */}
-      <img id='img' src={configImg} alt='configurations' value='configurations'
-        onClick={() => toggleComponent('configurations')}
-      />
-    </li>
-
-    <li>
-      <img id='img' src={listImg} alt='lists' value='lists'
-        onClick={() => toggleComponent('lists')}
-      />
-    </li>
-    <li>
-      <img id='img' src={homeImg} alt='home' value='home'
-        onClick={() => toggleComponent('home')}
-      />
-    </li>
-    <li>
-      <img id='ai' src={templateImg} alt='templates' value='templates'
-        onClick={() => toggleComponent('templates')}
-      />
-    </li>
-    <li>
-      <img id='img' src={processImg} alt='process' value='fileProcessor'
-          onClick={() => toggleComponent('fileProcessor')}
-        />
-    </li>
-  </ul>
-
-  if (vw >= 600) {
-    renderButtons = 
+  const renderButtons = 
     <ul>
-      <li>
-        <img id='img' src={listImg} alt='lists' value='lists'
-          onClick={() => toggleComponent('lists')}
-        />
-      </li>
       <li>
         <img id='img' src={configImg} alt='configurations' value='configurations'
           onClick={() => toggleComponent('configurations')}
+        />
+      </li>
+      <li>
+        <img id='img' src={listImg} alt='lists' value='lists'
+          onClick={() => toggleComponent('lists')}
         />
       </li>
       <li>
@@ -68,7 +35,6 @@ const Sidebar = ({ toggleComponent }) => {
           />
       </li>
     </ul>
-  }
 
   return (
     <div className="sidebar">
