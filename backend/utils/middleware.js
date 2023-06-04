@@ -29,6 +29,7 @@ function errorHandler (err, req, res, next) {
     res.status(401).json({error: 'Token expired, please login again'})
     next()
   } else {
+    console.log(err)
     res.status(500).json({error: err})
     next()
   }

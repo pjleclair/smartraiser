@@ -1,44 +1,60 @@
 import './home.css'
 import CanvasJSReact from '@canvasjs/react-charts';
+import axios from 'axios';
+import {useState,useEffect} from 'react';
+import dayjs from 'dayjs'
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
+
+
 const Home = ({userName}) => {
-    const dataPoints = [
-        {x:5,y: 5},
-        {x:6,y: 10},
-        {x:7,y: 20},
-        {x:8,y: 30},
-        {x:9,y: 10},
-        
-    ]
+    const [stats, setStats] = useState([])
+
+    useEffect(()=>{
+        fetchStats()
+    },[])
+
+    const fetchStats = async () => {
+        const emailStats = await axios.get('/api/statistics')
+        console.log(emailStats.data.Data)
+        const displayData = emailStats.data.Data.map((obj)=>{
+            return {
+                x: dayjs.unix(obj.SendTimeStart).$d,
+                y: obj.OpenedCount
+            }
+        })
+        console.log(displayData)
+        setStats(displayData)
+    }
+
+    
     const options = {
         theme: "dark2",
         backgroundColor: '#121212',
         title: {
-            text: "Daily Response Count"
+            text: "Open Count Per Campaign"
         },
         axisY: {
-            title: "Reponse Count",
+            title: "Open Count",
             prefix: "#"
         },
         axisX: {
-            title: "Day of the Month",
-            prefix: "Day",
+            title: "Date",
         },
         data: [{
             color: '#8CFC86',
             type: "line",
             toolTipContent: "Day {x}: {y} delivered",
-            dataPoints: dataPoints
+            dataPoints: stats
         }]
     }
+
     return(
         <div className='home'>
             <h3>Welcome <span>{userName}</span>!</h3>
             <br />
             <h2>Analytics Dashboard</h2>
-            <p>There are no analytics to display at this time. Please check back later.</p>
-            <CanvasJSChart options={options} containerProps={{ width: '100%', height: '300px',marginBottom:'5rem'}} />
+            <CanvasJSChart options={options} containerProps={{width: '100%',height: '300px',marginBottom:'5rem'}} />
         </div>
     )
 }

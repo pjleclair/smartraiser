@@ -14,6 +14,7 @@ const uploadRouter = require('./controllers/upload');
 const loginRouter = require('./controllers/login');
 const gptRouter = require('./controllers/gpt');
 const templateRouter = require('./controllers/templates');
+const statsRouter = require('./controllers/statistics')
 
 //config server
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/upload',uploadRouter);
 app.use('/api/login',loginRouter);
 app.use('/api/gpt',gptRouter)
 app.use('/api/templates',templateRouter)
+app.use('/api/statistics',statsRouter)
 app.use(middleware.errorHandler);
 
 // Start the server
