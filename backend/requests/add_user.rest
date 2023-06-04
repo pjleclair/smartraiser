@@ -1,8 +1,8 @@
-POST http://localhost:8080/api/users
+POST https://app.smartraiser.ai/api/users
 Content-Type: application/json
 
 {
-    "username": "jake",
-    "name": "Jake Archer",
-    "password": "jake"
+    "username": "test",
+    "name": "Test User",
+    "password": "test"
 }
