@@ -29,7 +29,7 @@ const App = () => {
   const [token, setToken] = useState(null);
   const [notifMessage, setNotifMessage] = useState('')
   const [msgColor, setMsgColor] = useState('')
-  const [uploadMsg, setUploadMsg] = useState(null);
+  const [uploadMsg, setUploadMsg] = useState('');
 
   useEffect(()=>{
     setTimeout(()=>{
@@ -38,6 +38,7 @@ const App = () => {
   },[notifMessage])
 
   useEffect(()=> {
+    console.log(uploadMsg)
     if (uploadMsg !== "") {
       setTimeout(() => {
         setUploadMsg("")
@@ -135,10 +136,9 @@ const App = () => {
         (<div className="app">
           <Sidebar toggleComponent={toggleComponent} />
           <div className="content">
-          {(notifMessage && isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
             <Header toggleComponent={toggleComponent}/>
             <div className='main-container'>
-              {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
+              {(uploadMsg) && <Notification message={uploadMsg}/>}
               <div className="main">
                 {renderActiveComponent()}
               </div>

@@ -31,7 +31,7 @@ const mailjet = Mailjet.apiConnect(
     }
 );
   
-uploadRouter.post('/', (req, res) => {
+uploadRouter.post('/', async (req, res) => {
     if (!req.body.list || !req.body.configuration || !req.body.template) {
         return res.status(400).json({ error: 'Invalid request' });
     }

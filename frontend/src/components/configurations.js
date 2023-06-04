@@ -8,6 +8,7 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
   const [name, setName] = useState('');
   const [configurations, setConfigurations] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState({name:''})
+  const [configNav, setConfigNav] = useState('create')
 
   useEffect(() => {
     if (jsonData && jsonData.length > 0) {
@@ -37,7 +38,8 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
       setConfigurations(response.data)
     })
     .catch((error) => {
-      console.log({msg: 'Error fetching configurations', color: '#CF6679'});
+      console.log(error)
+      setUploadMsg(error.response.data.error)
     });
   };
 
@@ -74,12 +76,10 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
     console.log(config,token)
     axios.post('/api/configurations/', configuration, config)
       .then((response) => {
-        console.log('Configuration saved successfully:', response.data);
-        setUploadMsg({msg: response.data.message, color: "#03DAC5"});
+        setUploadMsg(response.data.message);
       })
       .catch((error) => {
-        console.error('Error saving configuration:', error);
-        setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
+        setUploadMsg(error.response.data.error);
       });
   };
 
@@ -116,64 +116,75 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
       axios.delete(`/api/configurations/${id}`,config)
         .then((response) => {
           console.log('Configuration deleted succesfully');
-          setUploadMsg({msg: response.data.message, color: "#03DAC5"});
+          setUploadMsg(response.data.message);
         })
         .catch((error) => {
           console.error('Error deleting configuration:', error);
-          setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
+          setUploadMsg(error.response.data.error);
         });
-    } else {setUploadMsg({msg: "Configuration deletion aborted", color: "#CF6679"})}
+    } else {setUploadMsg("Configuration deletion aborted")}
+  }
+
+  const handleNavChange = (e) => {
+    setConfigNav(e.target.id)
   }
 
   return (
     <div className="configurations">
-      <h1 style={{color: "#FFFFFF"}}>Configurations</h1>
-      <div className='select-config-container'>
-        <div className='upload-config-container'>
-          <p style={{width: 'fit-content', margin: '0'}}>Upload a file below to create a configuration:</p>
-          <input type="file" onChange={onFileUpload} />
-          {sampleData.length > 0 && (
-            <div className="column-mapping">
-              <h2>Column Mapping:</h2>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Column</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.keys(sampleData).map((columnName, index) => (
-                    <tr key={index}>
-                      <td>{sampleData[index]}</td>
-                      <td className='select'>
-                        <select
-                          name={index}
-                          value={columnMappings[index]}
-                          onChange={handleColumnMapping}
-                        >
-                          <option value="">Select Value</option>
-                          <option value="fullName">Full Name</option>
-                          <option value="phoneNumber">Phone Number</option>
-                          <option value="emailAddress">Email Address</option>
-                          <option value="party">Party</option>
-                          <option value="age">Age</option>
-                        </select>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
-              <button onClick={() => saveConfiguration(name, columnMappings)}>
-                Save Configuration
-              </button>
-            </div>
-          )}
+      <div className='page-indicator'>
+          <h5>Smart<span>Raiser</span> {'>'} <span>Configurations</span></h5>
+      </div>
+      <div className='content-container'>
+        <div className='campaign-nav'>
+            <h5 id='saved' onClick={handleNavChange} style={(configNav === 'saved') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Saved</h5>
+            <h5 id='create' onClick={handleNavChange} style={(configNav === 'create') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Create</h5>
         </div>
-        <div id='divider'></div>
-        <div className='update-config-container'>
-          <p style={{width: 'fit-content', margin: '0'}}>Select an existing configuration to update or delete:</p>
+        <div className='select-config-container'>
+          {(configNav === 'create') ?
+          <div className='upload-config-container'>
+            <p style={{width: 'fit-content', margin: '0'}}>Upload a file below to create a configuration:</p>
+            <input type="file" onChange={onFileUpload} />
+            {sampleData.length > 0 && (
+              <div className="column-mapping">
+                <h2>Column Mapping:</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Column</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.keys(sampleData).map((columnName, index) => (
+                      <tr key={index}>
+                        <td>{sampleData[index]}</td>
+                        <td className='select'>
+                          <select
+                            name={index}
+                            value={columnMappings[index]}
+                            onChange={handleColumnMapping}
+                          >
+                            <option value="">Select Value</option>
+                            <option value="fullName">Full Name</option>
+                            <option value="phoneNumber">Phone Number</option>
+                            <option value="emailAddress">Email Address</option>
+                            <option value="party">Party</option>
+                            <option value="age">Age</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <input type="text" value={name} onChange={handleInputChange} placeholder="Configuration Name" />
+                <button onClick={() => saveConfiguration(name, columnMappings)}>
+                  Save Configuration
+                </button>
+              </div>
+            )}
+          </div> :
+          <div className='update-config-container'>
+            <p style={{width: 'fit-content', margin: '0'}}>Select an existing configuration to update or delete:</p>
             {configurations && configurations.length > 0 ? (
               <div className='config-update-container'>
                 <div className='select'>
@@ -228,12 +239,12 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
                 <button id='update' onClick={() => updateConfiguration(name, selectedConfiguration._id, columnMappings)}>
                   Update Configuration
                 </button>
-            </div>
+              </div>
             )}
-          </div>
+          </div> }
         </div>
-        <div id='mobile'></div>
       </div>
+    </div>
     );
 };
 

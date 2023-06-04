@@ -4,7 +4,7 @@
     width: 90%;
 }
 
-.campaign-nav h3 {
+.campaign-nav h5 {
     cursor: pointer;
 }
 
@@ -20,8 +20,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
 }
 
 .processor-container::-webkit-scrollbar {
@@ -161,7 +159,6 @@ input:focus {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 85%;
     }
     .gpt-container {
         width: 90%;

@@ -1,7 +1,6 @@
 .template-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
     position: relative;
     width: 100%;
 }
@@ -10,6 +9,16 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+}
+
+.page-indicator h5 {
+    margin: 0 0 1rem 0;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .config-container {

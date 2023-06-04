@@ -32,6 +32,7 @@ app.use('/api/upload',uploadRouter);
 app.use('/api/login',loginRouter);
 app.use('/api/gpt',gptRouter)
 app.use('/api/templates',templateRouter)
+app.use(middleware.errorHandler);
 
 // Start the server
 app.listen(port, () => {

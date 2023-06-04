@@ -17,6 +17,7 @@ const Templates = ({token, setUploadMsg}) => {
     const [selectedTemplate, setSelectedTemplate] = useState(null)
     const [templateName, setTemplateName] = useState('')
     const [showProgressBar, setShowProgressBar] = useState(false)
+    const [templateNav, setTemplateNav] = useState('create')
 
     const handleGPT = async (e) => {
         e.preventDefault();
@@ -41,13 +42,13 @@ const Templates = ({token, setUploadMsg}) => {
         try {
             const response = await axios.post('/api/gpt/', formData, config);
             setShowProgressBar(false)
-            setUploadMsg({msg: response.data.message, color: '#03DAC5'});
+            setUploadMsg(response.data.message);
             setGptArray(response.data.gpt);
             // Perform further processing or handle the server response here
         } catch (error) {
             setShowProgressBar(false)
             console.log('Error uploading file:', error);
-            setUploadMsg({msg: error.response.data.error, color: "#CF6679"})
+            setUploadMsg(error.response.data.error)
         }
     }
     
@@ -79,7 +80,11 @@ const Templates = ({token, setUploadMsg}) => {
     const handleTemplateSelect = (i) => {
         setSelectedIndex(i)
         setSelectedTemplate(gptArray[i].content)
-        setUploadMsg({msg:'Template Selected',color:'#03DAC5'})
+        setUploadMsg('Template Selected')
+    }
+
+    const handleNavChange = (e) => {
+        setTemplateNav(e.target.id)
     }
 
     const saveTemplate = (templateName, selectedTemplate) => {
@@ -103,74 +108,84 @@ const Templates = ({token, setUploadMsg}) => {
         axios.post('/api/templates/', template, config)
         .then((response) => {
             console.log('Template saved successfully:', response.data);
-            setUploadMsg({msg: response.data.message, color: "#03DAC5"});
+            setUploadMsg(response.data.message);
         })
         .catch((error) => {
             console.error('Error saving template:', error);
-            setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
+            setUploadMsg(error.response.data.error);
         });
     }
 
 
     return(
         <div className='template-container'>
-        <div className='gpt-container'>
-            <h2 style={{color: "#8CFC86"}}>Draft a Template:</h2>
-            <form onSubmit={(e)=>handleGPT(e)}>
-                <div className='config-container'>
-                    <div id='gpt-field'>
-                    <h3>Campaign description:</h3>
-                    <input type='text' required onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
-                    </div>
-                    <div id='gpt-field'>
-                    <h3>Organization name:</h3>
-                    <input type='text' required onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
-                    </div>
-                    <div id='gpt-field'>
-                    <h3>Narrative:</h3>
-                    <input type='text' required onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
-                    </div>
-                    <div id='gpt-field'>
-                    <h3>Donate Link:</h3>
-                    <input type='text' required onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
-                    </div>
-                </div>
-                <div className='delivery-container'>
-                    <h2 style={{color: "#8CFC86"}}>Intended Delivery Method:</h2>
-                    <div className='radio-container'>
-                        <div id='radio'>
-                        <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='text' checked={intendedDeliveryMethod === 'text'} value='text'/>
-                        <label>Text</label>
-                        </div>
-                        <div id='radio'>
-                        <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='email' checked={intendedDeliveryMethod === 'email'} value='email'/>
-                        <label>Email</label>
-                        </div>
-                    </div>
-                </div>
-                <button type='submit'>Draft Template</button>
-            </form>
-            <br />
-            {(showProgressBar) && <CircularProgress color="success" />}
-            <br/>
-            {((gptArray)&&(gptArray.length > 0)) && (
-            <div className='gpt-array'>
-                <h1>Select a Template:</h1>
-                {(selectedTemplate) && <div className='template-save-container'>
-                        <h3>Enter a template name:</h3>
-                        <input id='name' onChange={handleTemplateNameChange} placeholder='Template Name' type='text' name='templateName' value={templateName}/>
-                        <button onClick={()=>saveTemplate(templateName,selectedTemplate)}>Save Template</button>
-                    </div>}
-                {gptArray.map((message,i) => {
-                    let classname;
-                    selectedIndex === i ? classname = 'gpt-selected' : classname = 'gpt'
-                return <p className={classname} onClick={() => handleTemplateSelect(i)} id={i} key={i}
-                dangerouslySetInnerHTML={{__html: message.content.trim()}}></p>
-                })}
+            <div className='page-indicator'>
+                <h5>Smart<span>Raiser</span> {'>'} <span>Templates</span></h5>
             </div>
-            )}
+            <div className='content-container'>
+                <div className='campaign-nav'>
+                    <h5 id='saved' onClick={handleNavChange} style={(templateNav === 'saved') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Saved</h5>
+                    <h5 id='create' onClick={handleNavChange} style={(templateNav === 'create') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Create</h5>
+                </div>
+                {(templateNav === 'create') ?
+                <div className='gpt-container'>
+                    <h2 style={{color: "#8CFC86"}}>Draft a Template:</h2>
+                    <form onSubmit={(e)=>handleGPT(e)}>
+                        <div className='config-container'>
+                            <div id='gpt-field'>
+                            <h3>Campaign description:</h3>
+                            <input type='text' required onChange={handleCampaignDescChange} value={campaignDesc} placeholder='ex: democratic political campaign'></input>
+                            </div>
+                            <div id='gpt-field'>
+                            <h3>Organization name:</h3>
+                            <input type='text' required onChange={handleOrgNameChange} value={orgName} placeholder='ex: World Economic Forum'></input>
+                            </div>
+                            <div id='gpt-field'>
+                            <h3>Narrative:</h3>
+                            <input type='text' required onChange={handleNarrativeChange} value={narrative} placeholder='ex: environmental values'></input>
+                            </div>
+                            <div id='gpt-field'>
+                            <h3>Donate Link:</h3>
+                            <input type='text' required onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
+                            </div>
+                        </div>
+                        <div className='delivery-container'>
+                            <h2 style={{color: "#8CFC86"}}>Intended Delivery Method:</h2>
+                            <div className='radio-container'>
+                                <div id='radio'>
+                                <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='text' checked={intendedDeliveryMethod === 'text'} value='text'/>
+                                <label>Text</label>
+                                </div>
+                                <div id='radio'>
+                                <input name='intendedDeliveryMethod' type="radio" onChange={handleIntendedDeliveryMethodChange} id='email' checked={intendedDeliveryMethod === 'email'} value='email'/>
+                                <label>Email</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type='submit'>Draft Template</button>
+                    </form>
+                    <br />
+                    {(showProgressBar) && <CircularProgress color="success" />}
+                    <br/>
+                    {((gptArray)&&(gptArray.length > 0)) && (
+                    <div className='gpt-array'>
+                        <h1>Select a Template:</h1>
+                        {(selectedTemplate) && <div className='template-save-container'>
+                                <h3>Enter a template name:</h3>
+                                <input id='name' onChange={handleTemplateNameChange} placeholder='Template Name' type='text' name='templateName' value={templateName}/>
+                                <button onClick={()=>saveTemplate(templateName,selectedTemplate)}>Save Template</button>
+                            </div>}
+                        {gptArray.map((message,i) => {
+                            let classname;
+                            selectedIndex === i ? classname = 'gpt-selected' : classname = 'gpt'
+                        return <p className={classname} onClick={() => handleTemplateSelect(i)} id={i} key={i}
+                        dangerouslySetInnerHTML={{__html: message.content.trim()}}></p>
+                        })}
+                    </div>
+                    )}
+                </div> : <div></div>}
+            </div>
         </div>
-    </div>
     )
 }
 
