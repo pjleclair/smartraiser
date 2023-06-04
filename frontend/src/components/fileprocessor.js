@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './fileprocessor.css'
-import Notification from './notification'
 import {DateTimePicker} from '@mui/x-date-pickers/';
 import dayjs from 'dayjs'
 
-const FileProcessor = ({token}) => {
+const FileProcessor = ({token, setUploadMsg}) => {
   const [lists, setLists] = useState([]);
   const [selectedList, setSelectedList] = useState(null)
-  const [uploadMsg, setUploadMsg] = useState(null);
   const [deliveryMethod, setDeliveryMethod] = useState("email")
   const [configurations, setConfigurations] = useState([]);
   const [templates, setTemplates] = useState([])
@@ -17,13 +15,6 @@ const FileProcessor = ({token}) => {
   const [selectedCampaignNav, setSelectedCampaignNav] = useState('new')
   const [selectedTemplate, setSelectedTemplate] = useState(null)
 
-  useEffect(()=> {
-    if (uploadMsg !== "") {
-      setTimeout(() => {
-        setUploadMsg("")
-      }, 5000);
-    }
-  },[uploadMsg])
 
   useEffect(() => {
     fetchConfigurations();
@@ -144,10 +135,10 @@ const FileProcessor = ({token}) => {
 
   return (
     <div className='processor-container'>
-      {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
       <div className='campaign-nav'>
-        <h3 id='history' onClick={handleNav} style={(selectedCampaignNav === 'history') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Campaign History</h3>
-        <h3 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>New Campaign</h3>
+        <h5 id='history' onClick={handleNav} style={(selectedCampaignNav === 'history') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>History</h5>
+        <h5 id='scheduled' onClick={handleNav} style={(selectedCampaignNav === 'scheduled') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Scheduled</h5>
+        <h5 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Create</h5>
       </div>
       {(selectedCampaignNav === 'new') ? 
       <div className='new-campaign-container'>
@@ -170,7 +161,7 @@ const FileProcessor = ({token}) => {
                 <p className='no-configs'>No templates found.</p>
               )}
           </div>
-          <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '100%', margin: '1rem'}}></div>
+          <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
           <div className='upload-container'>
             <div className='config-select-container'>
               <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
@@ -248,7 +239,6 @@ const FileProcessor = ({token}) => {
           <br />
           <button className='upload-button' onClick={handleUpload}>Upload</button>
         </div>
-        <div id='mobile'></div>
       </div> : <div>Existing Campaign</div>
       }
     </div>

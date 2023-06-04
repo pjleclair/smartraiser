@@ -5,7 +5,7 @@ const Notification = ({message, msgColor}) => {
     let borderColor
     console.log(message)
     if (msgColor) {
-        notifColor = msgColor;
+        notifColor = '#FFFFFF';
         borderColor = msgColor;
     } else {
         notifColor = '#FFFFFF';

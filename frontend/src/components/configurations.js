@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './configurations.css'; // Assuming you have a corresponding CSS file for styling
-import Notification from './notification'
 
-const Configurations = ({ onFileUpload, jsonData, token }) => {
+const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
   const [columnMappings, setColumnMappings] = useState({});
   const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
-  const [updateMsg, setUpdateMsg] = useState(null);
   const [configurations, setConfigurations] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState({name:''})
 
@@ -22,14 +20,6 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
       );
     }
   }, [jsonData]);
-
-  useEffect(()=> {
-    if (updateMsg !== "") {
-      setTimeout(() => {
-        setUpdateMsg("")
-      }, 5000);
-    }
-  },[updateMsg])
 
   useEffect(()=> {
     fetchConfigurations();
@@ -85,11 +75,11 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
     axios.post('/api/configurations/', configuration, config)
       .then((response) => {
         console.log('Configuration saved successfully:', response.data);
-        setUpdateMsg({msg: response.data.message, color: "#03DAC5"});
+        setUploadMsg({msg: response.data.message, color: "#03DAC5"});
       })
       .catch((error) => {
         console.error('Error saving configuration:', error);
-        setUpdateMsg({msg: error.response.data.error, color: "#CF6679"});
+        setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
       });
   };
 
@@ -107,11 +97,11 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
     axios.put('/api/configurations/', configuration, config)
       .then((response) => {
         console.log('Configuration updated successfully:', response.data);
-        setUpdateMsg({msg: response.data.message, color: "#03DAC5"});
+        setUploadMsg({msg: response.data.message, color: "#03DAC5"});
       })
       .catch((error) => {
         console.error('Error updating configuration:', error);
-        setUpdateMsg({msg: error.response.data.error, color: "#CF6679"});
+        setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
       });
   };
 
@@ -126,18 +116,17 @@ const Configurations = ({ onFileUpload, jsonData, token }) => {
       axios.delete(`/api/configurations/${id}`,config)
         .then((response) => {
           console.log('Configuration deleted succesfully');
-          setUpdateMsg({msg: response.data.message, color: "#03DAC5"});
+          setUploadMsg({msg: response.data.message, color: "#03DAC5"});
         })
         .catch((error) => {
           console.error('Error deleting configuration:', error);
-          setUpdateMsg({msg: error.response.data.error, color: "#CF6679"});
+          setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
         });
-    } else {setUpdateMsg({msg: "Configuration deletion aborted", color: "#CF6679"})}
+    } else {setUploadMsg({msg: "Configuration deletion aborted", color: "#CF6679"})}
   }
 
   return (
     <div className="configurations">
-      {(updateMsg) && <Notification message={updateMsg.msg} msgColor={updateMsg.color}/>}
       <h1 style={{color: "#FFFFFF"}}>Configurations</h1>
       <div className='select-config-container'>
         <div className='upload-config-container'>

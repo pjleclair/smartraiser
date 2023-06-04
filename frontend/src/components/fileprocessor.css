@@ -1,7 +1,7 @@
 .campaign-nav {
     display: flex;
     justify-content: space-around;
-    width: 25rem;
+    width: 90%;
 }
 
 .campaign-nav h3 {
@@ -16,6 +16,7 @@
 }
 
 .processor-container {
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -89,8 +90,16 @@
     padding: 1rem;
     border-radius: 20px;
     border: 1px solid rgb(47, 51, 54);
-    width: 60%;
+    width: 80%;
+    /* disable scrollbar visual */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    margin-bottom: 5rem;
 }
+
+.gpt-container::-webkit-scrollbar {
+    display: none;
+  }
 
 .file-container {
     display: flex;

@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import Notification from './notification'
+import React, {useState} from 'react';
 import './templates.css'
 
 import axios from 'axios';
 
-const Templates = ({token}) => {
+import { CircularProgress } from '@mui/material';
 
-    const [uploadMsg, setUploadMsg] = useState(null);
+const Templates = ({token, setUploadMsg}) => {
+
     const [gptArray, setGptArray] = useState([])
     const [orgName, setOrgName] = useState("")
     const [campaignDesc, setCampaignDesc] = useState("")
@@ -16,17 +16,10 @@ const Templates = ({token}) => {
     const [selectedIndex, setSelectedIndex] = useState(null)
     const [selectedTemplate, setSelectedTemplate] = useState(null)
     const [templateName, setTemplateName] = useState(null)
-    
-
-    useEffect(()=> {
-        if (uploadMsg !== "") {
-        setTimeout(() => {
-            setUploadMsg("")
-        }, 5000);
-        }
-    },[uploadMsg])
+    const [showProgressBar, setShowProgressBar] = useState(false)
 
     const handleGPT = async () => {
+        setShowProgressBar(true)
         if (!campaignDesc || !orgName || !narrative || !donateLink) {
           return;
         }
@@ -45,13 +38,15 @@ const Templates = ({token}) => {
         }
     
         try {
-          const response = await axios.post('/api/gpt/', formData, config);
-          setUploadMsg({msg: response.data.message, color: '#03DAC5'});
-          setGptArray(response.data.gpt);
-          // Perform further processing or handle the server response here
+            const response = await axios.post('/api/gpt/', formData, config);
+            setShowProgressBar(false)
+            setUploadMsg({msg: response.data.message, color: '#03DAC5'});
+            setGptArray(response.data.gpt);
+            // Perform further processing or handle the server response here
         } catch (error) {
-          console.log('Error uploading file:', error);
-          setUploadMsg({msg: error.response.data.error, color: "#CF6679"})
+            setShowProgressBar(false)
+            console.log('Error uploading file:', error);
+            setUploadMsg({msg: error.response.data.error, color: "#CF6679"})
         }
     }
     
@@ -117,8 +112,8 @@ const Templates = ({token}) => {
 
 
     return(
+        <div className='template-container'>
         <div className='gpt-container'>
-            {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
             <h2 style={{color: "#8CFC86"}}>Draft a Template:</h2>
             <div className='config-container'>
             <div id='gpt-field'>
@@ -152,6 +147,8 @@ const Templates = ({token}) => {
             </div>
             </div>
             <button onClick={handleGPT}>Draft Template</button>
+            <br />
+            {(showProgressBar) && <CircularProgress color="success" />}
             <br/>
             {((gptArray)&&(gptArray.length > 0)) && (
             <div className='gpt-array'>
@@ -169,7 +166,7 @@ const Templates = ({token}) => {
                 })}
             </div>
             )}
-            <div id='mobile'></div>
+        </div>
         </div>
     )
 }

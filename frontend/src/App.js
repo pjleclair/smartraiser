@@ -29,12 +29,21 @@ const App = () => {
   const [token, setToken] = useState(null);
   const [notifMessage, setNotifMessage] = useState('')
   const [msgColor, setMsgColor] = useState('')
+  const [uploadMsg, setUploadMsg] = useState(null);
 
   useEffect(()=>{
     setTimeout(()=>{
       setNotifMessage('')
     },5000)
   },[notifMessage])
+
+  useEffect(()=> {
+    if (uploadMsg !== "") {
+      setTimeout(() => {
+        setUploadMsg("")
+      }, 5000);
+    }
+  },[uploadMsg])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
@@ -67,15 +76,15 @@ const App = () => {
 
   const renderActiveComponent = () => {
     if (activeComponent === 'lists') {
-      return <Lists onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
+      return <Lists setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
     } else if (activeComponent === 'fileProcessor') {
-      return <FileProcessor token={token}/>;
+      return <FileProcessor setUploadMsg={setUploadMsg} token={token}/>;
     } else if (activeComponent === 'home') {
-      return <Home userName={user.name}/>;
+      return <Home setUploadMsg={setUploadMsg} userName={user.name}/>;
     } else if (activeComponent === 'configurations') {
-      return <Configurations onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>
+      return <Configurations setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>
     } else if (activeComponent === 'templates') {
-      return <Templates token={token}/>
+      return <Templates setUploadMsg={setUploadMsg} token={token}/>
     }
   };
 
@@ -129,7 +138,10 @@ const App = () => {
           {(notifMessage && isLoggedIn) && <Notification message={notifMessage} msgColor={msgColor}/>}
             <Header toggleComponent={toggleComponent}/>
             <div className='main-container'>
-              <div className="main">{renderActiveComponent()}</div>
+              {(uploadMsg) && <Notification message={uploadMsg.msg} msgColor={uploadMsg.color}/>}
+              <div className="main">
+                {renderActiveComponent()}
+              </div>
             </div>
           </div>
         </div>)

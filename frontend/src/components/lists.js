@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './lists.css'; // Assuming you have a corresponding CSS file for styling
-import Notification from './notification'
 
-const Lists = ({ onFileUpload, jsonData, token }) => {
+const Lists = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
   const [name, setName] = useState('');
-  const [updateMsg, setUpdateMsg] = useState(null);
-
-  useEffect(()=> {
-    if (updateMsg !== "") {
-      setTimeout(() => {
-        setUpdateMsg("")
-      }, 5000);
-    }
-  },[updateMsg])
 
   const handleInputChange = (e) => {
     setName(e.target.value);
@@ -33,17 +23,16 @@ const Lists = ({ onFileUpload, jsonData, token }) => {
     axios.post('/api/lists/', list, config)
       .then((response) => {
         console.log('List saved successfully:', response.data);
-        setUpdateMsg({msg: response.data.message, color: "#03DAC5"});
+        setUploadMsg({msg: response.data.message, color: "#03DAC5"});
       })
       .catch((error) => {
         console.error('Error saving list:', error);
-        setUpdateMsg({msg: error.response.data.error, color: "#CF6679"});
+        setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
       });
   };
 
   return (
     <div className="lists">
-      {(updateMsg) && <Notification message={updateMsg.msg} msgColor={updateMsg.color}/>}
       <h1 style={{color: "#FFFFFF"}}>Lists</h1>
       <div className='select-config-container'>
         <div className='upload-config-container'>
