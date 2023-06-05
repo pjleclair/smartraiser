@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-height: fit-content;
 }
 
 .configurations h1 {
@@ -14,7 +15,8 @@
 
 .select-config-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     background-color: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(12px);
     padding: 1rem;
@@ -22,6 +24,7 @@
     border: 1px solid rgb(47, 51, 54);
     width: 80%;
     margin-bottom: 5rem;
+    height: 100%;
 }
 
 .config-update-container {
@@ -71,8 +74,6 @@
 
     .upload-config-container, .update-config-container {
         width: 100%;
-
-        margin-bottom: 1rem;
     }
 
     #divider {

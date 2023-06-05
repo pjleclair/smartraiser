@@ -109,12 +109,14 @@ const Home = ({userName}) => {
                     <br />
                 </div>
                 <div className='select-chart-container'>
-                    <h4>Choose a chart:</h4>
+                    <h4>Select a chart:</h4>
                     <div className='chart-menu-container'>
                         <button onClick={()=>handleChartChange('Open')}>Open</button>
                         <button onClick={()=>handleChartChange('Delivery')}>Delivery</button>
                         <button onClick={()=>handleChartChange('CTR')}>CTR</button>
                     </div>
+                    <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
+                    <br />
                     {(stats.length > 0) && <CanvasJSChart options={options} containerProps={{width:'75%', maxWidth:'750px',height: '300px',marginBottom:'5rem'}} />}
                 </div>
             </div>

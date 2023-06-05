@@ -86,6 +86,7 @@ const Lists = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
               )
             }
           </div>
+          <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '2rem 0 2rem 0'}}></div>
         </div>
         }
       </div>

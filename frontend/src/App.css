@@ -28,8 +28,7 @@ input[type="text"], input[type="password"] {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
+  align-items: center;}
 
 @media (max-width: 600px) {
   .content {
@@ -53,6 +52,9 @@ input[type="text"], input[type="password"] {
   /* disable scrollbar visual */
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+
+  height: 100%;
+
 
 }
 

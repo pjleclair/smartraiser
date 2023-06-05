@@ -6,6 +6,7 @@ span {
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-height: fit-content;
 }
 
 .select-chart-container {
@@ -22,6 +23,7 @@ span {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
     margin-bottom: 5rem;
+    height: 100%;
 }
 
 .home h2 {
