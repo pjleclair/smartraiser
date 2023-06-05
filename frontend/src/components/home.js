@@ -17,6 +17,7 @@ const Home = ({userName}) => {
     const [chartYAxisLabel, setChartYAxisLabel] = useState('')
     const [chartYAxisSuffix, setChartYAxisSuffix] = useState('')
     const [chartYAxisPrefix, setChartYAxisPrefix] = useState('#')
+    const [chartYAxisMaximum, setChartYAxisMaximum] = useState(null)
     const [toolTipContent, setToolTipContent] = useState('')
 
     useEffect(()=>{
@@ -55,6 +56,9 @@ const Home = ({userName}) => {
             setChartTitle('Cross-Campaign Open Count')
             setChartXAxisLabel('Date')
             setChartYAxisLabel('Open Count')
+            setChartYAxisSuffix('')
+            setChartYAxisPrefix('')
+            setChartYAxisMaximum(null)
             setStats(openStats)
         }
         else if (chart === 'Delivery') {
@@ -62,6 +66,9 @@ const Home = ({userName}) => {
             setChartTitle('Cross-Campaign Delivery Count')
             setChartXAxisLabel('Date')
             setChartYAxisLabel('Delivery Count')
+            setChartYAxisSuffix('')
+            setChartYAxisPrefix('')
+            setChartYAxisMaximum(null)
             setStats(deliveryStats)
         }
         else if (chart === 'CTR') {
@@ -71,6 +78,7 @@ const Home = ({userName}) => {
             setChartYAxisLabel('CTR')
             setChartYAxisSuffix('%')
             setChartYAxisPrefix('')
+            setChartYAxisMaximum(100)
             setStats(ctrStats)
         }
     }
@@ -86,6 +94,7 @@ const Home = ({userName}) => {
             title: chartYAxisLabel,
             prefix: chartYAxisPrefix,
             suffix: chartYAxisSuffix,
+            maximum: chartYAxisMaximum,
         },
         axisX: {
             title: chartXAxisLabel,

@@ -184,12 +184,12 @@ uploadRouter.post('/', async (req, res) => {
                             messagingServiceSid: process.env.TWILIO_MSG_SID, 
                             body: template, from: "+18885459281", to: `+1${num}`,
                         sendAt: date, scheduleType: 'fixed' })
-                        .then(message => console.log(message.sid));
+                        .then(message => console.log(message.status));
                     } else {
                         client.messages
                         .create({ body: template, from: "+18885459281", to: `+1${num}`,
                         })
-                        .then(message => console.log(message.sid));
+                        .then(message => console.log(message.status));
                     }
                 } catch (err) {
                     console.log('error sending text:', err)
