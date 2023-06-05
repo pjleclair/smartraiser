@@ -5,10 +5,31 @@ span {
 .home {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 100%;
+}
+
+.select-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    padding: 1rem;
+    border-radius: 20px;
+    border: 1px solid rgb(47, 51, 54);
+    width: 80%;
+    /* disable scrollbar visual */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    margin-bottom: 5rem;
 }
 
 .home h2 {
     color: #8CFC86;
+}
+
+.chart-menu-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
 }

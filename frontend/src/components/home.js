@@ -9,6 +9,15 @@ const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Home = ({userName}) => {
     const [stats, setStats] = useState([])
+    const [openStats, setOpenStats] = useState([])
+    const [deliveryStats, setDeliveryStats] = useState([])
+    const [ctrStats, setCtrStats] = useState([])
+    const [chartTitle, setChartTitle] = useState('')
+    const [chartXAxisLabel, setChartXAxisLabel] = useState('')
+    const [chartYAxisLabel, setChartYAxisLabel] = useState('')
+    const [chartYAxisSuffix, setChartYAxisSuffix] = useState('')
+    const [chartYAxisPrefix, setChartYAxisPrefix] = useState('#')
+    const [toolTipContent, setToolTipContent] = useState('')
 
     useEffect(()=>{
         fetchStats()
@@ -16,45 +25,99 @@ const Home = ({userName}) => {
 
     const fetchStats = async () => {
         const emailStats = await axios.get('/api/statistics')
-        console.log(emailStats.data.Data)
-        const displayData = emailStats.data.Data.map((obj)=>{
+        const openData = emailStats.data.Data.map((obj)=>{
             return {
                 x: dayjs.unix(obj.SendTimeStart).$d,
                 y: obj.OpenedCount
             }
         })
-        console.log(displayData)
-        setStats(displayData)
+        const deliveryData = emailStats.data.Data.map((obj)=>{
+            return {
+                x: dayjs.unix(obj.SendTimeStart).$d,
+                y: obj.DeliveredCount
+            }
+        })
+        const ctrData = emailStats.data.Data.map((obj)=>{
+            return {
+                x: dayjs.unix(obj.SendTimeStart).$d,
+                y: Number(obj.ClickedCount/obj.DeliveredCount)*100
+            }
+        })
+        
+        setOpenStats(openData)
+        setDeliveryStats(deliveryData)
+        setCtrStats(ctrData)
+    }
+
+    const handleChartChange = (chart) => {
+        if (chart === 'Open') {
+            setToolTipContent("{x}: {y} opened")
+            setChartTitle('Cumulative Open Count')
+            setChartXAxisLabel('Date')
+            setChartYAxisLabel('Open Count')
+            setStats(openStats)
+        }
+        else if (chart === 'Delivery') {
+            setToolTipContent("{x}: {y} delivered")
+            setChartTitle('Cumulative Delivery Count')
+            setChartXAxisLabel('Date')
+            setChartYAxisLabel('Delivery Count')
+            setStats(deliveryStats)
+        }
+        else if (chart === 'CTR') {
+            setToolTipContent("{x}: {y}%")
+            setChartTitle('Cumulative CTR')
+            setChartXAxisLabel('Date')
+            setChartYAxisLabel('CTR')
+            setChartYAxisSuffix('%')
+            setChartYAxisPrefix('')
+            setStats(ctrStats)
+        }
     }
 
     
     const options = {
         theme: "dark2",
-        backgroundColor: '#121212',
+        backgroundColor: 'rgba(0, 0, 0, 0.35)',
         title: {
-            text: "Open Count Per Campaign"
+            text: chartTitle,
         },
         axisY: {
-            title: "Open Count",
-            prefix: "#"
+            title: chartYAxisLabel,
+            prefix: chartYAxisPrefix,
+            suffix: chartYAxisSuffix,
         },
         axisX: {
-            title: "Date",
+            title: chartXAxisLabel,
         },
         data: [{
             color: '#8CFC86',
             type: "line",
-            toolTipContent: "Day {x}: {y} delivered",
+            toolTipContent: toolTipContent,
             dataPoints: stats
         }]
     }
 
     return(
         <div className='home'>
-            <h3>Welcome <span>{userName}</span>!</h3>
-            <br />
-            <h2>Analytics Dashboard</h2>
-            <CanvasJSChart options={options} containerProps={{width: '100%',height: '300px',marginBottom:'5rem'}} />
+            <div className='page-indicator'>
+                <h5>Smart<span>Raiser</span> {'>'} <span>Home</span></h5>
+            </div>
+            <div className='content-container'>
+                <div>
+                    <h3>Welcome <span>{userName}</span>!</h3>
+                    <br />
+                </div>
+                <div className='select-chart-container'>
+                    <h4>Choose a chart:</h4>
+                    <div className='chart-menu-container'>
+                        <button onClick={()=>handleChartChange('Open')}>Open</button>
+                        <button onClick={()=>handleChartChange('Delivery')}>Delivery</button>
+                        <button onClick={()=>handleChartChange('CTR')}>CTR</button>
+                    </div>
+                    {(stats.length > 0) && <CanvasJSChart options={options} containerProps={{width: '80%',height: '300px',marginBottom:'5rem'}} />}
+                </div>
+            </div>
         </div>
     )
 }
