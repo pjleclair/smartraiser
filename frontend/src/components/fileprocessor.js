@@ -1,81 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './fileprocessor.css'
 import {DateTimePicker} from '@mui/x-date-pickers/';
 import dayjs from 'dayjs'
 
-const FileProcessor = ({token, setUploadMsg}) => {
-  const [lists, setLists] = useState([]);
+const FileProcessor = ({token, setUploadMsg,lists,configurations,templates}) => {
   const [selectedList, setSelectedList] = useState(null)
   const [deliveryMethod, setDeliveryMethod] = useState("email")
-  const [configurations, setConfigurations] = useState([]);
-  const [templates, setTemplates] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
   const [value, onChange] = useState(null);
   const [selectedCampaignNav, setSelectedCampaignNav] = useState('new')
   const [selectedTemplate, setSelectedTemplate] = useState(null)
-
-  useEffect(() => {
-    fetchConfigurations();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    fetchLists();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    fetchTemplates();
-    // eslint-disable-next-line
-  }, []);
-
-  const fetchConfigurations = () => {
-    const config = {
-      headers: {
-        Authorization: token
-      }
-    }
-    axios.get('/api/configurations/',config)
-    .then((response) => {
-      setConfigurations(response.data)
-    })
-    .catch((error) => {
-      setUploadMsg(error.response.data.error);
-    });
-  };
-
-  const fetchTemplates = () => {
-    const config = {
-      headers: {
-        Authorization: token
-      }
-    }
-    axios.get('/api/templates/',config)
-    .then((response) => {
-      setTemplates(response.data)
-    })
-    .catch((error) => {
-      console.log(error)
-      setUploadMsg(error.response.data.error);
-    });
-  };
-
-
-  const fetchLists = () => {
-      const config = {
-        headers: {
-          Authorization: token
-        }
-      }
-      axios.get('/api/lists/',config)
-      .then((response) => {
-        setLists(response.data)
-      })
-      .catch((error) => {
-        setUploadMsg(error.response.data.error);
-    });
-  };
 
   const handleConfigurationSelect = (event) => {
     const selectedConfigId = event.target.value;

@@ -30,21 +30,10 @@ const App = () => {
   const [notifMessage, setNotifMessage] = useState('')
   const [msgColor, setMsgColor] = useState('')
   const [uploadMsg, setUploadMsg] = useState('');
+  const [lists, setLists] = useState([])
+  const [configurations, setConfigurations] = useState([])
+  const [templates, setTemplates] = useState([])
 
-  useEffect(()=>{
-    setTimeout(()=>{
-      setNotifMessage('')
-    },5000)
-  },[notifMessage])
-
-  useEffect(()=> {
-    console.log(uploadMsg)
-    if (uploadMsg !== "") {
-      setTimeout(() => {
-        setUploadMsg("")
-      }, 5000);
-    }
-  },[uploadMsg])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
@@ -71,6 +60,86 @@ const App = () => {
     }
   }, [])
 
+  useEffect(()=>{
+    setTimeout(()=>{
+      setNotifMessage('')
+    },5000)
+  },[notifMessage])
+
+  useEffect(()=> {
+    console.log(uploadMsg)
+    if (uploadMsg !== "") {
+      setTimeout(() => {
+        setUploadMsg("")
+      }, 5000);
+    }
+  },[uploadMsg])
+
+  useEffect(() => {
+    if (token !== null)
+      fetchConfigurations();
+    // eslint-disable-next-line
+  }, [token]);
+
+  useEffect(() => {
+    if (token !== null)
+      fetchLists();
+    // eslint-disable-next-line
+  }, [token]);
+
+  useEffect(() => {
+    if (token !== null)
+      fetchTemplates();
+    // eslint-disable-next-line
+  }, [token]);
+
+  const fetchConfigurations = () => {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    axios.get('/api/configurations/',config)
+    .then((response) => {
+      setConfigurations(response.data)
+    })
+    .catch((error) => {
+      setUploadMsg(error.response.data.error);
+    });
+  };
+
+  const fetchTemplates = () => {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    axios.get('/api/templates/',config)
+    .then((response) => {
+      setTemplates(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+      setUploadMsg(error.response.data.error);
+    });
+  };
+
+
+  const fetchLists = () => {
+      const config = {
+        headers: {
+          Authorization: token
+        }
+      }
+      axios.get('/api/lists/',config)
+      .then((response) => {
+        setLists(response.data)
+      })
+      .catch((error) => {
+        setUploadMsg(error.response.data.error);
+    });
+  };
+
   const toggleComponent = (component) => {
     setActiveComponent(component);
   };
@@ -79,11 +148,11 @@ const App = () => {
     if (activeComponent === 'lists') {
       return <Lists setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
     } else if (activeComponent === 'fileProcessor') {
-      return <FileProcessor setUploadMsg={setUploadMsg} token={token}/>;
+      return <FileProcessor setUploadMsg={setUploadMsg} token={token} lists={lists} templates={templates} configurations={configurations}/>;
     } else if (activeComponent === 'home') {
       return <Home setUploadMsg={setUploadMsg} userName={user.name}/>;
     } else if (activeComponent === 'configurations') {
-      return <Configurations setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>
+      return <Configurations setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token} configurations={configurations}/>
     } else if (activeComponent === 'templates') {
       return <Templates setUploadMsg={setUploadMsg} token={token}/>
     }

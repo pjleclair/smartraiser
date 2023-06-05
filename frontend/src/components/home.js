@@ -52,21 +52,21 @@ const Home = ({userName}) => {
     const handleChartChange = (chart) => {
         if (chart === 'Open') {
             setToolTipContent("{x}: {y} opened")
-            setChartTitle('Cumulative Open Count')
+            setChartTitle('Cross-Campaign Open Count')
             setChartXAxisLabel('Date')
             setChartYAxisLabel('Open Count')
             setStats(openStats)
         }
         else if (chart === 'Delivery') {
             setToolTipContent("{x}: {y} delivered")
-            setChartTitle('Cumulative Delivery Count')
+            setChartTitle('Cross-Campaign Delivery Count')
             setChartXAxisLabel('Date')
             setChartYAxisLabel('Delivery Count')
             setStats(deliveryStats)
         }
         else if (chart === 'CTR') {
             setToolTipContent("{x}: {y}%")
-            setChartTitle('Cumulative CTR')
+            setChartTitle('Cross-Campaign CTR')
             setChartXAxisLabel('Date')
             setChartYAxisLabel('CTR')
             setChartYAxisSuffix('%')
@@ -104,7 +104,7 @@ const Home = ({userName}) => {
                 <h5>Smart<span>Raiser</span> {'>'} <span>Home</span></h5>
             </div>
             <div className='content-container'>
-                <div>
+                <div style={{display:'flex'}}>
                     <h3>Welcome <span>{userName}</span>!</h3>
                     <br />
                 </div>
@@ -115,7 +115,7 @@ const Home = ({userName}) => {
                         <button onClick={()=>handleChartChange('Delivery')}>Delivery</button>
                         <button onClick={()=>handleChartChange('CTR')}>CTR</button>
                     </div>
-                    {(stats.length > 0) && <CanvasJSChart options={options} containerProps={{width: '80%',height: '300px',marginBottom:'5rem'}} />}
+                    {(stats.length > 0) && <CanvasJSChart options={options} containerProps={{width:'75%', maxWidth:'750px',height: '300px',marginBottom:'5rem'}} />}
                 </div>
             </div>
         </div>

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './configurations.css'; // Assuming you have a corresponding CSS file for styling
 
-const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
+const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configurations }) => {
   const [columnMappings, setColumnMappings] = useState({});
   const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
-  const [configurations, setConfigurations] = useState([])
   const [selectedConfiguration, setSelectedConfiguration] = useState({name:''})
   const [configNav, setConfigNav] = useState('create')
 
@@ -21,27 +20,6 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg }) => {
       );
     }
   }, [jsonData]);
-
-  useEffect(()=> {
-    fetchConfigurations();
-    //eslint-disable-next-line
-  },[])
-
-  const fetchConfigurations = () => {
-    const config = {
-      headers: {
-        Authorization: token
-      }
-    }
-    axios.get('/api/configurations/',config)
-    .then((response) => {
-      setConfigurations(response.data)
-    })
-    .catch((error) => {
-      console.log(error)
-      setUploadMsg(error.response.data.error)
-    });
-  };
 
   const handleConfigurationSelect = (event) => {
     const selectedConfigId = event.target.value;

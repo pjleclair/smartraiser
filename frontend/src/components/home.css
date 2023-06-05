@@ -33,3 +33,9 @@ span {
     gap: 1rem;
     margin-bottom: 3rem;
 }
+
+@media (max-width: 600px) {
+    .select-chart-container {
+        width: 90%;
+    }
+}
