@@ -93,6 +93,12 @@ const App = () => {
     // eslint-disable-next-line
   }, [token]);
 
+  const fetchAll = () => {
+    fetchTemplates()
+    fetchConfigurations()
+    fetchLists()
+  }
+
   const fetchConfigurations = () => {
     const config = {
       headers: {
@@ -142,19 +148,20 @@ const App = () => {
 
   const toggleComponent = (component) => {
     setActiveComponent(component);
+    setJsonData(null)
   };
 
   const renderActiveComponent = () => {
     if (activeComponent === 'lists') {
-      return <Lists setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token}/>;
+      return <Lists setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token} lists={lists} fetchAll={fetchAll}/>;
     } else if (activeComponent === 'fileProcessor') {
-      return <FileProcessor setUploadMsg={setUploadMsg} token={token} lists={lists} templates={templates} configurations={configurations}/>;
+      return <FileProcessor setUploadMsg={setUploadMsg} token={token} lists={lists} templates={templates} configurations={configurations} fetchAll={fetchAll}/>;
     } else if (activeComponent === 'home') {
       return <Home setUploadMsg={setUploadMsg} userName={user.name}/>;
     } else if (activeComponent === 'configurations') {
-      return <Configurations setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token} configurations={configurations}/>
+      return <Configurations setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token} configurations={configurations} fetchAll={fetchAll}/>
     } else if (activeComponent === 'templates') {
-      return <Templates setUploadMsg={setUploadMsg} token={token}/>
+      return <Templates setUploadMsg={setUploadMsg} fetchAll={fetchAll} templates={templates} token={token}/>
     }
   };
 

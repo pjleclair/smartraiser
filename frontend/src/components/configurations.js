@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './configurations.css'; // Assuming you have a corresponding CSS file for styling
 
-const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configurations }) => {
-  const [columnMappings, setColumnMappings] = useState({});
+const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configurations, fetchAll }) => {
+  const [columnMappings, setColumnMappings] = useState([]);
   const [sampleData, setSampleData] = useState([]);
   const [name, setName] = useState('');
   const [selectedConfiguration, setSelectedConfiguration] = useState({name:''})
@@ -20,6 +20,17 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configura
       );
     }
   }, [jsonData]);
+
+  useEffect(()=>{
+    if (selectedConfiguration.columnMappings === undefined)
+      return
+    setColumnMappings(
+      Object.keys(selectedConfiguration.columnMappings).reduce((acc, key, index) => {
+        acc[index] = selectedConfiguration.columnMappings[index];
+        return acc;
+      }, {})
+    );
+  },[selectedConfiguration])
 
   const handleConfigurationSelect = (event) => {
     const selectedConfigId = event.target.value;
@@ -59,6 +70,7 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configura
       .catch((error) => {
         setUploadMsg(error.response.data.error);
       });
+    fetchAll()
   };
 
   const updateConfiguration = (name,id,columnMappings) => {
@@ -75,12 +87,14 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configura
     axios.put('/api/configurations/', configuration, config)
       .then((response) => {
         console.log('Configuration updated successfully:', response.data);
-        setUploadMsg({msg: response.data.message, color: "#03DAC5"});
+        setUploadMsg(response.data.message);
       })
       .catch((error) => {
         console.error('Error updating configuration:', error);
-        setUploadMsg({msg: error.response.data.error, color: "#CF6679"});
+        setUploadMsg(error.response.data.error);
       });
+
+    fetchAll()
   };
 
   const deleteConfiguration = (id) => {
@@ -95,16 +109,23 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configura
         .then((response) => {
           console.log('Configuration deleted succesfully');
           setUploadMsg(response.data.message);
+          setColumnMappings([])
+          setSelectedConfiguration({name:''})
         })
         .catch((error) => {
           console.error('Error deleting configuration:', error);
           setUploadMsg(error.response.data.error);
         });
     } else {setUploadMsg("Configuration deletion aborted")}
+    fetchAll()
   }
 
   const handleNavChange = (e) => {
     setConfigNav(e.target.id)
+    fetchAll()
+    setColumnMappings([])
+    setSelectedConfiguration({name:''})
+    setName('')
   }
 
   return (
@@ -200,7 +221,7 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configura
                         <td className='select'>
                           <select
                             name={index}
-                            value={selectedConfiguration.columnMappings[index]}
+                            value={columnMappings[index]}
                             onChange={handleColumnMapping}
                           >
                             <option value="">Select Value</option>

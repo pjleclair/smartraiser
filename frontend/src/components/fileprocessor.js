@@ -134,7 +134,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates}) => 
                     <span className='focus'></span>
                   </div>
                 ) : (
-                  <p className='no-configs'>No configurations found.</p>
+                  <p className='no-configs'>No lists found.</p>
                 )}
               </div>
               <div className='delivery-container'>

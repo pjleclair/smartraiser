@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { CircularProgress } from '@mui/material';
 
-const Templates = ({token, setUploadMsg}) => {
+const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
 
     const [gptArray, setGptArray] = useState([])
     const [orgName, setOrgName] = useState("")
@@ -81,6 +81,14 @@ const Templates = ({token, setUploadMsg}) => {
         setSelectedIndex(i)
         setSelectedTemplate(gptArray[i].content)
         setUploadMsg('Template Selected')
+    }
+
+    const handleTemplateListSelect = (e) => {
+        const id = e.target.value
+        const template = templates.find(obj => {
+            return obj._id === id
+        })
+        setSelectedTemplate(template)
     }
 
     const handleNavChange = (e) => {
@@ -183,7 +191,28 @@ const Templates = ({token, setUploadMsg}) => {
                         })}
                     </div>
                     )}
-                </div> : <div></div>}
+                </div> : 
+                <div className='gpt-container'>
+                    <div className='config-select-container'>
+                    <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select Template:</h2>
+                        {templates && templates.length > 0 ? (
+                        <div className='select'>
+                            <select onChange={handleTemplateListSelect}>
+                            <option value="">Select Template</option>
+                            {templates.map((template) => (
+                                <option key={template._id} value={template._id}>
+                                {template.name}
+                                </option>
+                            ))}
+                            </select>
+                            <span className='focus'></span>
+                        </div>
+                        ) : (
+                        <p className='no-configs'>No templates found.</p>
+                        )}
+                    </div>
+                    <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
+                </div>}
             </div>
         </div>
     )
