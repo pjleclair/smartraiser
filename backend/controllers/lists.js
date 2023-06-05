@@ -56,8 +56,8 @@ listRouter.post('/', userExtractor, async (req, res) => {
 listRouter.put('/', userExtractor, async (req, res) => {
   try {
       let name = req.body.name;
-      let data = req.body.data;
-      const id = req.body.id;
+      let newList = req.body.selectedList.list;
+      const id = req.body.selectedList._id;
       
       //check to see if user's token matches the config creator's
       const decodedToken = jwt.verify(req.token, process.env.SECRET)
@@ -71,22 +71,22 @@ listRouter.put('/', userExtractor, async (req, res) => {
       } else if (!(user._id.toString() === list.user.toString())) {
           res.status(401).json({error: 'Lists can only be updated by the creator'})
       } else {
-          // Update the configuration
+          // Update the list
           if (name === '')
               name = List.findById(id).name;
-          if (columnMappings === undefined || (Object.keys(columnMappings).length === 0))
-              columnMappings = Configuration.findById(id).columnMappings;
-          Configuration.findByIdAndUpdate(id,{name: name, columnMappings: columnMappings})
+          if (newList === undefined || (Object.keys(newList).length === 0))
+              list = List.findById(id).list;
+          List.findByIdAndUpdate(id,{name: name, list: list.list})
           .then(config => {
-              res.json({ message: 'Configuration updated successfully', config: config });
+              res.json({ message: 'List updated successfully', list: list });
           })
           .catch(error => {
               res.status(500).json({error: 'Failed to update configuration'})
           })
       }
   } catch (error) {
-      console.log('Error updating configuration:', error);
-      res.status(500).json({ error: 'Failed to update configuration' });
+      console.log('Error updating list:', error);
+      res.status(500).json({ error: 'Failed to update list' });
   }
 });
   
@@ -99,22 +99,22 @@ listRouter.delete('/:id', userExtractor, async (req, res) => {
           res.status(401).json({ error: 'token invalid' })
       }
       const user = req.user;
-      const config = await Configuration.findById(id)
-      if (config === null) {
-          res.status(401).json({error: 'No configuration found with that ID'})
-      } else if (!(user._id.toString() === config.user.toString())) {
-          res.status(401).json({error: 'Configurations can only be deleted by their creator'})
+      const list = await List.findById(id)
+      if (list === null) {
+          res.status(401).json({error: 'No list found with that ID'})
+      } else if (!(user._id.toString() === list.user.toString())) {
+          res.status(401).json({error: 'Lists can only be deleted by their creator'})
       } else {
-          Configuration.findByIdAndDelete(id)
-          .then(config => {
-              res.json({ message: 'Configuration deleted successfully', config: config });
+          List.findByIdAndDelete(id)
+          .then(list => {
+              res.json({ message: 'List deleted successfully', list: list });
           })
           .catch(error => {
-              res.status(500).json({error: 'Failed to delete configuration'})
+              res.status(500).json({error: 'Failed to delete list'})
       })}
   } catch (error) {
-      console.log('Error deleting configuration', error);
-      res.status(500).json({ error: 'Failed to delete configuration' });
+      console.log('Error deleting list', error);
+      res.status(500).json({ error: 'Failed to delete list' });
   }
 })
   
