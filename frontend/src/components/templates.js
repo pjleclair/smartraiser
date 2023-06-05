@@ -93,6 +93,9 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
 
     const handleNavChange = (e) => {
         setTemplateNav(e.target.id)
+        setSelectedTemplate(null)
+        setTemplateName('')
+        fetchAll()
     }
 
     const saveTemplate = (templateName, selectedTemplate) => {
@@ -122,6 +125,52 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
             console.error('Error saving template:', error);
             setUploadMsg(error.response.data.error);
         });
+    }
+
+    const updateTemplate = (name,id,newTemplate) => {
+        const template = {
+          name,
+          id,
+          newTemplate
+        }
+        const config = {
+          headers: {
+            Authorization: token
+          }
+        }
+        axios.put('/api/templates/', template, config)
+          .then((response) => {
+            console.log('Template updated successfully:', response.data);
+            setUploadMsg(response.data.message);
+          })
+          .catch((error) => {
+            console.error('Error updating template:', error);
+            setUploadMsg(error.response.data.error);
+          });
+    
+        fetchAll()
+      };
+
+    const deleteTemplate = (id) => {
+        const config = {
+            headers: {
+            Authorization: token
+            }
+        }
+        if (window.confirm("Are you sure you want to delete this template?"))
+        {
+            axios.delete(`/api/templates/${id}`,config)
+            .then((response) => {
+                console.log('Template deleted succesfully');
+                setUploadMsg(response.data.message);
+                setSelectedTemplate(null)
+            })
+            .catch((error) => {
+                console.error('Error deleting template:', error);
+                setUploadMsg(error.response.data.error);
+            });
+        } else {setUploadMsg("Template deletion aborted")}
+        fetchAll()
     }
 
 
@@ -212,6 +261,20 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
                         )}
                     </div>
                     <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
+                    {(selectedTemplate) && 
+                        <div>
+                            <div style={{display:'flex',alignItems:'center',justifyContent:'space-around'}}>
+                                <h3>Edit template:</h3>
+                                <input id='name' onChange={handleTemplateNameChange} placeholder='Template Name' type='text' name='templateName' value={templateName}/>
+                                <button id='update' onClick={() => updateTemplate(templateName, selectedTemplate._id, selectedTemplate.template)}>
+                                Update
+                                </button>
+                                <button id='delete' onClick={()=>deleteTemplate(selectedTemplate._id)}>Delete</button>
+                            </div>
+                            <h3 style={{padding:'0 1rem'}}><span>Intended delivery method:</span> {selectedTemplate.intendedDeliveryMethod}</h3>
+                            <h3 style={{padding:'0 1rem'}}><span>Template text:</span></h3>
+                            <p style={{border:'1px solid'}}>{selectedTemplate.template}</p>
+                        </div>}
                 </div>}
             </div>
         </div>

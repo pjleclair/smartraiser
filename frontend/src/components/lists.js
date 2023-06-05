@@ -76,7 +76,7 @@ const Lists = ({ onFileUpload, jsonData, token, setUploadMsg, lists, fetchAll })
         Authorization: token
       }
     }
-    if (window.confirm("Are you sure you want to delete this configuration?"))
+    if (window.confirm("Are you sure you want to delete this list?"))
     {
       axios.delete(`/api/lists/${id}`,config)
         .then((response) => {

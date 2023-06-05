@@ -58,6 +58,71 @@ templateRouter.post('/', userExtractor, async (req, res) => {
   }
 });
 
+templateRouter.put('/', userExtractor, async (req, res) => {
+  try {
+      let name = req.body.name;
+      let newTemplate = req.body.newTemplate;
+      const id = req.body.id;
+      
+      //check to see if user's token matches the config creator's
+      const decodedToken = jwt.verify(req.token, process.env.SECRET)
+      if (!decodedToken.id) {
+          res.status(401).json({ error: 'token invalid' })
+      }
+      const user = req.user;
+      const template = await Template.findById(id)
+      if (template === null) {
+          res.status(401).json({error: 'No template found with that ID'})
+      } else if (!(user._id.toString() === template.user.toString())) {
+          res.status(401).json({error: 'Templates can only be updated by the creator'})
+      } else {
+          // Update the template
+          if (name === '')
+              name = Template.findById(id).name;
+          if (newTemplate === undefined || (Object.keys(newTemplate).length === 0))
+              template = Template.findById(id).template;
+          Template.findByIdAndUpdate(id,{name: name, template: template.template})
+          .then(config => {
+              res.json({ message: 'Template updated successfully', template: template });
+          })
+          .catch(error => {
+              res.status(500).json({error: 'Failed to update template'})
+          })
+      }
+  } catch (error) {
+      console.log('Error updating template:', error);
+      res.status(500).json({ error: 'Failed to update template' });
+  }
+});
+  
+templateRouter.delete('/:id', userExtractor, async (req, res) => {
+  try {
+      const id = req.params.id;
+
+      const decodedToken = jwt.verify(req.token, process.env.SECRET)
+      if (!decodedToken.id) {
+          res.status(401).json({ error: 'token invalid' })
+      }
+      const user = req.user;
+      const template = await Template.findById(id)
+      if (template === null) {
+          res.status(401).json({error: 'No template found with that ID'})
+      } else if (!(user._id.toString() === template.user.toString())) {
+          res.status(401).json({error: 'Templates can only be deleted by their creator'})
+      } else {
+          Template.findByIdAndDelete(id)
+          .then(template => {
+              res.json({ message: 'Template deleted successfully', template: template });
+          })
+          .catch(error => {
+              res.status(500).json({error: 'Failed to delete template'})
+      })}
+  } catch (error) {
+      console.log('Error deleting template', error);
+      res.status(500).json({ error: 'Failed to delete template' });
+  }
+})
+
 templateRouter.get('/', userExtractor, async (req, res, next) => {
   try {
     if (req.user) {
