@@ -42,3 +42,22 @@
 #name {
     width: auto;
 }
+
+.template-name-edit-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.template-name-edit-container button#delete {
+    width: auto;
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .template-name-edit-container {
+        flex-direction: column;
+        align-content: center;
+    }
+}

@@ -262,8 +262,8 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
                     </div>
                     <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
                     {(selectedTemplate) && 
-                        <div>
-                            <div style={{display:'flex',alignItems:'center',justifyContent:'space-around'}}>
+                        <div style={{width:'100%'}}>
+                            <div className='template-name-edit-container'>
                                 <h3>Edit template:</h3>
                                 <input id='name' onChange={handleTemplateNameChange} placeholder='Template Name' type='text' name='templateName' value={templateName}/>
                                 <button id='update' onClick={() => updateTemplate(templateName, selectedTemplate._id, selectedTemplate.template)}>

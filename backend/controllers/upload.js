@@ -4,7 +4,8 @@ const axios = require('axios');
 const XLSX = require('xlsx');
 const Mailjet = require('node-mailjet');
 const jwt = require('jsonwebtoken')
-const {Agenda} = require('@hokify/agenda')
+const {Agenda} = require('@hokify/agenda');
+const { userExtractor } = require('../utils/middleware');
 
 //Agenda Job Scheduling Configuration
 const agenda = new Agenda({ db: { address: process.env.MONGO } });
@@ -31,7 +32,8 @@ const mailjet = Mailjet.apiConnect(
     }
 );
   
-uploadRouter.post('/', async (req, res) => {
+uploadRouter.post('/', userExtractor, async (req, res) => {
+    console.log(req.user)
     if (!req.body.list || !req.body.configuration || !req.body.template) {
         return res.status(400).json({ error: 'Invalid request' });
     }
@@ -123,7 +125,7 @@ uploadRouter.post('/', async (req, res) => {
                         });
                         (async function () {
                             await agenda.start();
-                            await agenda.schedule(date, 'send email campaign');
+                            await agenda.schedule(date, 'send email campaign',req.user._id);
                         })();
                     } else {
                         const request = mailjet
