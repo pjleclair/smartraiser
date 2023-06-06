@@ -1,17 +1,11 @@
 import './home.css'
 import CanvasJSReact from '@canvasjs/react-charts';
-import axios from 'axios';
-import {useState,useEffect} from 'react';
-import dayjs from 'dayjs'
+import {useState} from 'react';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
 
-const Home = ({userName}) => {
-    const [stats, setStats] = useState([])
-    const [openStats, setOpenStats] = useState([])
-    const [deliveryStats, setDeliveryStats] = useState([])
-    const [ctrStats, setCtrStats] = useState([])
+const Home = ({userName, stats, openStats, deliveryStats, ctrStats, setStats, fetchAll}) => {
     const [chartTitle, setChartTitle] = useState('')
     const [chartXAxisLabel, setChartXAxisLabel] = useState('')
     const [chartYAxisLabel, setChartYAxisLabel] = useState('')
@@ -20,37 +14,8 @@ const Home = ({userName}) => {
     const [chartYAxisMaximum, setChartYAxisMaximum] = useState(null)
     const [toolTipContent, setToolTipContent] = useState('')
 
-    useEffect(()=>{
-        fetchStats()
-    },[])
-
-    const fetchStats = async () => {
-        const emailStats = await axios.get('/api/statistics')
-        const openData = emailStats.data.Data.map((obj)=>{
-            return {
-                x: dayjs.unix(obj.SendTimeStart).$d,
-                y: obj.OpenedCount
-            }
-        })
-        const deliveryData = emailStats.data.Data.map((obj)=>{
-            return {
-                x: dayjs.unix(obj.SendTimeStart).$d,
-                y: obj.DeliveredCount
-            }
-        })
-        const ctrData = emailStats.data.Data.map((obj)=>{
-            return {
-                x: dayjs.unix(obj.SendTimeStart).$d,
-                y: Number(obj.ClickedCount/obj.DeliveredCount)*100
-            }
-        })
-        
-        setOpenStats(openData)
-        setDeliveryStats(deliveryData)
-        setCtrStats(ctrData)
-    }
-
     const handleChartChange = (chart) => {
+        fetchAll()
         if (chart === 'Open') {
             setToolTipContent("{x}: {y} opened")
             setChartTitle('Cross-Campaign Open Count')
@@ -101,7 +66,7 @@ const Home = ({userName}) => {
         },
         data: [{
             color: '#8CFC86',
-            type: "line",
+            type: "column",
             toolTipContent: toolTipContent,
             dataPoints: stats
         }]

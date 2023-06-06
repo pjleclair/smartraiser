@@ -125,7 +125,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         });
                         (async function () {
                             await agenda.start();
-                            await agenda.schedule(date, 'send email campaign',req.user._id);
+                            await agenda.schedule(date, 'send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod });
                         })();
                     } else {
                         const request = mailjet
@@ -145,7 +145,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                     ],
                                     TemplateID: 4847744,
                                     TemplateLanguage: true,
-                                    CustomCampaign: orgName,
+                                    CustomCampaign: req.user.id,
                                     Subject: `${orgName} Needs Your Help!`,
                                     Variables: {
                                         msg: template,

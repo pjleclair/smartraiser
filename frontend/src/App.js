@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import dayjs from 'dayjs'
 
 import Header from './components/header';
 import Lists from './components/lists.js';
@@ -33,6 +34,40 @@ const App = () => {
   const [lists, setLists] = useState([])
   const [configurations, setConfigurations] = useState([])
   const [templates, setTemplates] = useState([])
+  const [stats, setStats] = useState([])
+  const [openStats, setOpenStats] = useState([])
+  const [deliveryStats, setDeliveryStats] = useState([])
+  const [ctrStats, setCtrStats] = useState([])
+
+  useEffect(()=>{
+    fetchStats()
+  },[])
+
+  const fetchStats = async () => {
+      const emailStats = await axios.get('/api/statistics')
+      const openData = emailStats.data.Data.map((obj)=>{
+          return {
+              x: dayjs.unix(obj.SendTimeStart).$d,
+              y: obj.OpenedCount
+          }
+      })
+      const deliveryData = emailStats.data.Data.map((obj)=>{
+          return {
+              x: dayjs.unix(obj.SendTimeStart).$d,
+              y: obj.DeliveredCount
+          }
+      })
+      const ctrData = emailStats.data.Data.map((obj)=>{
+          return {
+              x: dayjs.unix(obj.SendTimeStart).$d,
+              y: Number(obj.ClickedCount/obj.DeliveredCount)*100
+          }
+      })
+      
+      setOpenStats(openData)
+      setDeliveryStats(deliveryData)
+      setCtrStats(ctrData)
+  }
 
 
   useEffect(() => {
@@ -97,6 +132,7 @@ const App = () => {
     fetchTemplates()
     fetchConfigurations()
     fetchLists()
+    fetchStats()
   }
 
   const fetchConfigurations = () => {
@@ -149,6 +185,8 @@ const App = () => {
   const toggleComponent = (component) => {
     setActiveComponent(component);
     setJsonData(null)
+    setStats([])
+    fetchAll()
   };
 
   const renderActiveComponent = () => {
@@ -157,7 +195,7 @@ const App = () => {
     } else if (activeComponent === 'fileProcessor') {
       return <FileProcessor setUploadMsg={setUploadMsg} token={token} lists={lists} templates={templates} configurations={configurations} fetchAll={fetchAll}/>;
     } else if (activeComponent === 'home') {
-      return <Home setUploadMsg={setUploadMsg} userName={user.name}/>;
+      return <Home setUploadMsg={setUploadMsg} userName={user.name} fetchAll={fetchAll} stats={stats} openStats={openStats} deliveryStats={deliveryStats} ctrStats={ctrStats} setStats={setStats}/>;
     } else if (activeComponent === 'configurations') {
       return <Configurations setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token} configurations={configurations} fetchAll={fetchAll}/>
     } else if (activeComponent === 'templates') {
