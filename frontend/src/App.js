@@ -40,33 +40,40 @@ const App = () => {
   const [ctrStats, setCtrStats] = useState([])
 
   useEffect(()=>{
+    if (token !== null)
     fetchStats()
-  },[])
+  },[token])
 
   const fetchStats = async () => {
-      const emailStats = await axios.get('/api/statistics')
-      const openData = emailStats.data.Data.map((obj)=>{
-          return {
-              x: dayjs.unix(obj.SendTimeStart).$d,
-              y: obj.OpenedCount
-          }
-      })
-      const deliveryData = emailStats.data.Data.map((obj)=>{
-          return {
-              x: dayjs.unix(obj.SendTimeStart).$d,
-              y: obj.DeliveredCount
-          }
-      })
-      const ctrData = emailStats.data.Data.map((obj)=>{
-          return {
-              x: dayjs.unix(obj.SendTimeStart).$d,
-              y: Number(obj.ClickedCount/obj.DeliveredCount)*100
-          }
-      })
-      
-      setOpenStats(openData)
-      setDeliveryStats(deliveryData)
-      setCtrStats(ctrData)
+    const config = {
+      headers: {
+        Authorization: user.token
+      }
+    }
+    const emailStats = await axios.get('/api/statistics',config)
+    const openData = emailStats.data.map((obj)=>{
+        return {
+            x: dayjs.unix(obj.SendTimeStart).$d,
+            y: (obj.OpenedCount/obj.DeliveredCount)*100
+        }
+    })
+
+    const deliveryData = emailStats.data.map((obj)=>{
+        return {
+            x: dayjs.unix(obj.SendTimeStart).$d,
+            y: obj.DeliveredCount
+        }
+    })
+    const ctrData = emailStats.data.map((obj)=>{
+        return {
+            x: dayjs.unix(obj.SendTimeStart).$d,
+            y: Number(obj.ClickedCount/obj.DeliveredCount)*100
+        }
+    })
+    
+    setOpenStats(openData)
+    setDeliveryStats(deliveryData)
+    setCtrStats(ctrData)
   }
 
 
@@ -102,7 +109,6 @@ const App = () => {
   },[notifMessage])
 
   useEffect(()=> {
-    console.log(uploadMsg)
     if (uploadMsg !== "") {
       setTimeout(() => {
         setUploadMsg("")

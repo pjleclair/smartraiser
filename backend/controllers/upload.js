@@ -91,7 +91,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                 {
                                     From: {
                                     Email: "info@smartraiser.ai",
-                                    Name: "SmartRaiser"
+                                    Name: orgName
                                     },
                                     To: [
                                     {
@@ -101,7 +101,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                     ],
                                     TemplateID: 4847744,
                                     TemplateLanguage: true,
-                                    CustomCampaign: orgName,
+                                    CustomCampaign: req.user._id,
                                     Subject: `${orgName} Needs Your Help!`,
                                     Variables: {
                                         msg: template,
@@ -135,7 +135,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                 {
                                     From: {
                                     Email: "info@smartraiser.ai",
-                                    Name: "SmartRaiser"
+                                    Name: orgName
                                     },
                                     To: [
                                     {

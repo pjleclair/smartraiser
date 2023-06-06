@@ -17,18 +17,18 @@ const Home = ({userName, stats, openStats, deliveryStats, ctrStats, setStats, fe
     const handleChartChange = (chart) => {
         fetchAll()
         if (chart === 'Open') {
-            setToolTipContent("{x}: {y} opened")
-            setChartTitle('Cross-Campaign Open Count')
+            setToolTipContent("{x}: {y}% opened")
+            setChartTitle('Account-Wide Open Rate')
             setChartXAxisLabel('Date')
-            setChartYAxisLabel('Open Count')
-            setChartYAxisSuffix('')
+            setChartYAxisLabel('Open Rate')
+            setChartYAxisSuffix('%')
             setChartYAxisPrefix('')
             setChartYAxisMaximum(null)
             setStats(openStats)
         }
         else if (chart === 'Delivery') {
             setToolTipContent("{x}: {y} delivered")
-            setChartTitle('Cross-Campaign Delivery Count')
+            setChartTitle('Account-Wide Delivery Count')
             setChartXAxisLabel('Date')
             setChartYAxisLabel('Delivery Count')
             setChartYAxisSuffix('')
@@ -38,7 +38,7 @@ const Home = ({userName, stats, openStats, deliveryStats, ctrStats, setStats, fe
         }
         else if (chart === 'CTR') {
             setToolTipContent("{x}: {y}%")
-            setChartTitle('Cross-Campaign CTR')
+            setChartTitle('Account-Wide CTR')
             setChartXAxisLabel('Date')
             setChartYAxisLabel('CTR')
             setChartYAxisSuffix('%')
