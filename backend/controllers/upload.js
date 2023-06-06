@@ -191,6 +191,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                             .create({
                                 messagingServiceSid: process.env.TWILIO_MSG_SID, 
                                 body: template, from: "+18885459281", to: `+1${num}`,
+                                statusCallback: 'https://app.smartraiser.ai/api/upload/callback', provideFeedback: true,
                             })
                             .then(message => console.log(message.status));
                         });
@@ -202,6 +203,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         agenda.define('send text campaign', async job => {
                             await client.messages
                             .create({ body: template, from: "+18885459281", to: `+1${num}`,
+                            statusCallback: 'https://app.smartraiser.ai/api/upload/callback', provideFeedback: true,
                             })
                             .then(message => console.log(message.status));
                         });
@@ -218,5 +220,15 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
     })
     res.json({ data: combinedData, message: "File upload successful"});
 });
+
+uploadRouter.post('/callback', async (req,res) => {
+    const messageSid = req.body.MessageSid;
+    const messageStatus = req.body.MessageStatus;
+
+    client.messages(messageSid)
+      .feedback
+      .create({outcome: 'confirmed'})
+      .then(feedback => console.log(feedback.messageSid));
+})
 
 module.exports = uploadRouter;

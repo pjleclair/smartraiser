@@ -39,44 +39,6 @@ const App = () => {
   const [deliveryStats, setDeliveryStats] = useState([])
   const [ctrStats, setCtrStats] = useState([])
 
-  useEffect(()=>{
-    if (token !== null)
-    fetchStats()
-  },[token])
-
-  const fetchStats = async () => {
-    const config = {
-      headers: {
-        Authorization: user.token
-      }
-    }
-    const emailStats = await axios.get('/api/statistics',config)
-    const openData = emailStats.data.map((obj)=>{
-        return {
-            x: dayjs.unix(obj.SendTimeStart).$d,
-            y: (obj.OpenedCount/obj.DeliveredCount)*100
-        }
-    })
-
-    const deliveryData = emailStats.data.map((obj)=>{
-        return {
-            x: dayjs.unix(obj.SendTimeStart).$d,
-            y: obj.DeliveredCount
-        }
-    })
-    const ctrData = emailStats.data.map((obj)=>{
-        return {
-            x: dayjs.unix(obj.SendTimeStart).$d,
-            y: Number(obj.ClickedCount/obj.DeliveredCount)*100
-        }
-    })
-    
-    setOpenStats(openData)
-    setDeliveryStats(deliveryData)
-    setCtrStats(ctrData)
-  }
-
-
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedAppUser')
     if (loggedUserJSON) {
@@ -134,6 +96,12 @@ const App = () => {
     // eslint-disable-next-line
   }, [token]);
 
+  useEffect(()=>{
+    if (token !== null)
+    fetchStats()
+    //eslint-disable-next-line
+  },[token])
+
   const fetchAll = () => {
     fetchTemplates()
     fetchConfigurations()
@@ -187,6 +155,38 @@ const App = () => {
         setUploadMsg(error.response.data.error);
     });
   };
+
+  const fetchStats = async () => {
+    const config = {
+      headers: {
+        Authorization: user.token
+      }
+    }
+    const emailStats = await axios.get('/api/statistics',config)
+    const openData = emailStats.data.map((obj)=>{
+        return {
+            x: dayjs.unix(obj.SendTimeStart).$d,
+            y: (obj.OpenedCount/obj.DeliveredCount).toFixed(3)*100
+        }
+    })
+
+    const deliveryData = emailStats.data.map((obj)=>{
+        return {
+            x: dayjs.unix(obj.SendTimeStart).$d,
+            y: obj.DeliveredCount
+        }
+    })
+    const ctrData = emailStats.data.map((obj)=>{
+        return {
+            x: dayjs.unix(obj.SendTimeStart).$d,
+            y: (obj.ClickedCount/obj.DeliveredCount).toFixed(3)*100
+        }
+    })
+    
+    setOpenStats(openData)
+    setDeliveryStats(deliveryData)
+    setCtrStats(ctrData)
+  }
 
   const toggleComponent = (component) => {
     setActiveComponent(component);

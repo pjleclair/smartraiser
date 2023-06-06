@@ -15,12 +15,11 @@ statsRouter.get('/', userExtractor, async (req,res,next) => {
         const request = await mailjet
             .get("campaignoverview", {'version': 'v3'})
             .request()
-        const resData = request.body.Data.filter((campaign) => {
-            console.log(campaign)
+        const emailStats = request.body.Data.filter((campaign) => {
             if (campaign.Title === req.user._id.toString())
                 return campaign
         })
-        res.status(200).json(resData)
+        res.status(200).json(emailStats)
     } catch (error) {
         next(error)
     }
