@@ -33,7 +33,6 @@ const mailjet = Mailjet.apiConnect(
 );
   
 uploadRouter.post('/', userExtractor, async (req, res) => {
-    console.log(req.user)
     if (!req.body.list || !req.body.configuration || !req.body.template) {
         return res.status(400).json({ error: 'Invalid request' });
     }
@@ -125,10 +124,11 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         });
                         (async function () {
                             await agenda.start();
-                            await agenda.schedule(date, 'send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod });
+                            await agenda.schedule(date, 'send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:true });
                         })();
                     } else {
-                        const request = mailjet
+                        agenda.define('send email campaign', async job => {
+                            await mailjet
                             .post('send', { version: 'v3.1' })
                             .request({
                                 Messages: [
@@ -165,6 +165,11 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                             .catch((err) => {
                                 console.log(err.statusCode)
                             })
+                        });
+                        (async function () {
+                            await agenda.start();
+                            await agenda.now('send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:false });
+                        })();
                     }                    
                 } catch (err) {
                     console.log('error sending email:', err)
@@ -181,17 +186,29 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
             } else {
                 try {
                     if (date !== 'null') {
-                        client.messages
-                        .create({
-                            messagingServiceSid: process.env.TWILIO_MSG_SID, 
-                            body: template, from: "+18885459281", to: `+1${num}`,
-                        sendAt: date, scheduleType: 'fixed' })
-                        .then(message => console.log(message.status));
+                        agenda.define('send text campaign', async job => {
+                            await client.messages
+                            .create({
+                                messagingServiceSid: process.env.TWILIO_MSG_SID, 
+                                body: template, from: "+18885459281", to: `+1${num}`,
+                            })
+                            .then(message => console.log(message.status));
+                        });
+                        (async function () {
+                            await agenda.start();
+                            await agenda.schedule(date, 'send text campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:true });
+                        })();
                     } else {
-                        client.messages
-                        .create({ body: template, from: "+18885459281", to: `+1${num}`,
-                        })
-                        .then(message => console.log(message.status));
+                        agenda.define('send text campaign', async job => {
+                            await client.messages
+                            .create({ body: template, from: "+18885459281", to: `+1${num}`,
+                            })
+                            .then(message => console.log(message.status));
+                        });
+                        (async function () {
+                            await agenda.start();
+                            await agenda.now('send text campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:false });
+                        })();
                     }
                 } catch (err) {
                     console.log('error sending text:', err)
