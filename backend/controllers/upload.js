@@ -224,7 +224,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
 uploadRouter.post('/callback', async (req,res) => {
     const messageSid = req.body.MessageSid;
     const messageStatus = req.body.MessageStatus;
-
+    if (req.body.SmsStatus === 'delivered')
     client.messages(messageSid)
       .feedback
       .create({outcome: 'confirmed'})

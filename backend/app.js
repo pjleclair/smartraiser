@@ -22,6 +22,7 @@ const port = 8080;
 
 // Middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('build'));
 app.use(cors());
 app.use(fileUpload());
