@@ -6,6 +6,7 @@ const Mailjet = require('node-mailjet');
 const jwt = require('jsonwebtoken')
 const {Agenda} = require('@hokify/agenda');
 const { userExtractor } = require('../utils/middleware');
+const user = require('../models/user');
 
 //Agenda Job Scheduling Configuration
 const agenda = new Agenda({ db: { address: process.env.MONGO } });
@@ -20,7 +21,6 @@ const apiUrl="https://api.openai.com/v1/completions";
 //Twilio Configuration
 const accountSid = process.env.ACC_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require("twilio")(accountSid, authToken);
 
 //Mailjet Configuration
 const mailjet = Mailjet.apiConnect(
@@ -40,6 +40,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
     if (!decodedToken.id) {
         res.status(401).json({ error: 'token invalid' })
     }
+    const phoneNum = req.user.phoneNum;
     const configuration = JSON.parse(req.body.configuration);
     const list = JSON.parse(req.body.list);
     const templateObj = JSON.parse(req.body.template);
@@ -50,6 +51,9 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
     const donateLink = templateObj.donateLink;
     const deliveryMethod = req.body.deliveryMethod;
     const date = req.body.date;
+
+    //twilio client
+    const client = require("twilio")(accountSid, authToken, { accountSid: req.user.accSid });
 
     // Combine the list data with the configuration
     const combinedData = list.list.map((row) => {
@@ -190,7 +194,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                             await client.messages
                             .create({
                                 messagingServiceSid: process.env.TWILIO_MSG_SID, 
-                                body: template, from: "+18885459281", to: `+1${num}`,
+                                body: template, from: phoneNum, to: `+1${num}`,
                                 statusCallback: 'https://app.smartraiser.ai/api/upload/callback', provideFeedback: true,
                             })
                             .then(message => console.log(message.status));
@@ -202,7 +206,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                     } else {
                         agenda.define('send text campaign', async job => {
                             await client.messages
-                            .create({ body: template, from: "+18885459281", to: `+1${num}`,
+                            .create({ body: template, from: phoneNum, to: `+1${num}`,
                             statusCallback: 'https://app.smartraiser.ai/api/upload/callback', provideFeedback: true,
                             })
                             .then(message => console.log(message.status));

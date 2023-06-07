@@ -27,7 +27,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Template'
       }
-    ]
+    ],
+    accSid: String,
+    accToken: String,
+    phoneNum: String,
 });
 
 userSchema.plugin(uniqueValidator);
