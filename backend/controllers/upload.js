@@ -105,7 +105,6 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                     ],
                                     TemplateID: 4847744,
                                     TemplateLanguage: true,
-                                    CustomCampaign: req.user._id,
                                     Subject: `${orgName} Needs Your Help!`,
                                     Variables: {
                                         msg: template,
@@ -149,7 +148,6 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                     ],
                                     TemplateID: 4847744,
                                     TemplateLanguage: true,
-                                    CustomCampaign: req.user.id,
                                     Subject: `${orgName} Needs Your Help!`,
                                     Variables: {
                                         msg: template,
