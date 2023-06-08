@@ -106,8 +106,6 @@
 .campaign-info {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    /* flex-direction: column; */
-    flex-wrap: wrap;
     border: 1px solid;
     border-radius: 8px;
     width: 100%;
@@ -220,6 +218,9 @@ input:focus {
     }
     input {
         width: 90%;
+    }
+    .campaign-info {
+        grid-template-columns: 1fr 1fr;
     }
     #del {
         display: grid;

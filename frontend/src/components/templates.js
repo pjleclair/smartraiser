@@ -15,6 +15,7 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
     const [intendedDeliveryMethod, setIntendedDeliveryMethod] = useState("email")
     const [selectedIndex, setSelectedIndex] = useState(null)
     const [selectedTemplate, setSelectedTemplate] = useState(null)
+    const [currentTemplate, setCurrentTemplate] = useState(null)
     const [templateName, setTemplateName] = useState('')
     const [showProgressBar, setShowProgressBar] = useState(false)
     const [templateNav, setTemplateNav] = useState('create')
@@ -89,12 +90,15 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
             return obj._id === id
         })
         setSelectedTemplate(template)
+        setCurrentTemplate(template.template)
     }
 
     const handleNavChange = (e) => {
         setTemplateNav(e.target.id)
         setSelectedTemplate(null)
         setTemplateName('')
+        setSelectedTemplate(null)
+        setCurrentTemplate('')
         fetchAll()
     }
 
@@ -235,8 +239,13 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
                         {gptArray.map((message,i) => {
                             let classname;
                             selectedIndex === i ? classname = 'gpt-selected' : classname = 'gpt'
-                        return <p className={classname} onClick={() => handleTemplateSelect(i)} id={i} key={i}
-                        dangerouslySetInnerHTML={{__html: message.content.trim()}}></p>
+                        return <p className={classname}
+                            onClick={() => {if (selectedIndex !== i) handleTemplateSelect(i)}} id={i} key={i}
+                            dangerouslySetInnerHTML={{__html: message.content.trim()}}
+                            contentEditable={(selectedIndex === i)}
+                            suppressContentEditableWarning={(selectedIndex === i)}
+                            onInput={(e)=>{setSelectedTemplate(e.currentTarget.innerHTML)}}
+                        ></p>
                         })}
                     </div>
                     )}
@@ -266,14 +275,19 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
                             <div className='template-name-edit-container'>
                                 <h3>Edit template:</h3>
                                 <input id='name' onChange={handleTemplateNameChange} placeholder='Template Name' type='text' name='templateName' value={templateName}/>
-                                <button id='update' onClick={() => updateTemplate(templateName, selectedTemplate._id, selectedTemplate.template)}>
+                                <button id='update' onClick={() => updateTemplate(templateName, selectedTemplate._id, currentTemplate)}>
                                 Update
                                 </button>
                                 <button id='delete' onClick={()=>deleteTemplate(selectedTemplate._id)}>Delete</button>
                             </div>
                             <h3 style={{padding:'0 1rem'}}><span>Intended delivery method:</span> {selectedTemplate.intendedDeliveryMethod}</h3>
                             <h3 style={{padding:'0 1rem'}}><span>Template text:</span></h3>
-                            <p style={{border:'1px solid'}}>{selectedTemplate.template}</p>
+                            <p style={{border:'1px solid'}}
+                                dangerouslySetInnerHTML={{__html: selectedTemplate.template.trim()}}
+                                contentEditable={true}
+                                suppressContentEditableWarning={true}
+                                onInput={(e)=>{setCurrentTemplate(e.currentTarget.textContent)}}
+                            ></p>
                         </div>}
                 </div>}
             </div>

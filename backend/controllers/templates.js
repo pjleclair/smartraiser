@@ -81,7 +81,7 @@ templateRouter.put('/', userExtractor, async (req, res) => {
               name = Template.findById(id).name;
           if (newTemplate === undefined || (Object.keys(newTemplate).length === 0))
               template = Template.findById(id).template;
-          Template.findByIdAndUpdate(id,{name: name, template: template.template})
+          Template.findByIdAndUpdate(id,{name: name, template: newTemplate})
           .then(config => {
               res.json({ message: 'Template updated successfully', template: template });
           })
