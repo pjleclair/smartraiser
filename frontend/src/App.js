@@ -165,8 +165,6 @@ const App = () => {
     const stats = await axios.get('/api/statistics',config)
     const emailStats = stats.data.emailStats;
     const txtStats = stats.data.messages;
-    console.log(txtStats)
-    console.log(emailStats)
     const openData = emailStats.map((obj)=>{
         return {
             x: dayjs.unix(obj.SendTimeStart).$d,

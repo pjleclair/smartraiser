@@ -17,20 +17,30 @@ const mailjet = Mailjet.apiConnect(
 );
 
 statsRouter.get('/', userExtractor, async (req,res,next) => {
-    //twilio client
-    const client = require("twilio")(accountSid, authToken, { accountSid: req.user.accSid });
-
     try {
+        //twilio client
+        //const client = require("twilio")(accountSid, authToken, { accountSid: req.user.accSid });
+        
+        //get mailjet campaigns
         const request = await mailjet
             .get("campaignoverview", {'version': 'v3'})
             .request()
         const emailStats = request.body.Data
-        //     .filter((campaign) => {
-        //     if (campaign.Title === req.user._id.toString())
-        //         return campaign
-        // })
-        const messages = await client.messages.list()
-        res.status(200).json({emailStats,messages})
+            .filter((campaign) => {
+                const filtered = req.user.campaigns.filter((userCampaign) => {
+                    if (userCampaign === campaign.Title)
+                        return userCampaign
+                })
+                if (filtered.length > 0)
+                    return campaign
+        })
+        // const templates = await mailjet
+        //     .get("template", {'version': 'v3'})
+        //     .request()
+        // console.log(templates.body.Data)
+        //const messages = await client.messages.list()
+        // res.status(200).json({emailStats,messages})
+        res.status(200).json({emailStats})
     } catch (error) {
         next(error)
     }

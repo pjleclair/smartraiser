@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const {Agenda} = require('@hokify/agenda');
 const { userExtractor } = require('../utils/middleware');
 const user = require('../models/user');
+const { randomUUID } = require('crypto');
 
 //Agenda Job Scheduling Configuration
 const agenda = new Agenda({ db: { address: process.env.MONGO } });
@@ -87,6 +88,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
             } else {
                 try {
                     if (date !== 'null') {
+                        const campaignId = randomUUID()
                         agenda.define('send email campaign', async job => {
                             await mailjet
                             .post('send', { version: 'v3.1' })
@@ -94,7 +96,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                 Messages: [
                                 {
                                     From: {
-                                    Email: "info@smartraiser.ai",
+                                    Email: req.user.domain,
                                     Name: orgName
                                     },
                                     To: [
@@ -105,6 +107,8 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                     ],
                                     TemplateID: 4847744,
                                     TemplateLanguage: true,
+                                    CustomCampaign: campaignId,
+                                    CustomID: req.user._id,
                                     Subject: `${orgName} Needs Your Help!`,
                                     Variables: {
                                         msg: template,
@@ -128,8 +132,12 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         (async function () {
                             await agenda.start();
                             await agenda.schedule(date, 'send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:true });
+                            const user = req.user
+                            user.campaigns = user.campaigns.concat(campaignId);
+                            await user.save()
                         })();
                     } else {
+                        const campaignId = randomUUID()
                         agenda.define('send email campaign', async job => {
                             await mailjet
                             .post('send', { version: 'v3.1' })
@@ -137,7 +145,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                 Messages: [
                                 {
                                     From: {
-                                    Email: "info@smartraiser.ai",
+                                    Email: req.user.domain,
                                     Name: orgName
                                     },
                                     To: [
@@ -148,6 +156,8 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                                     ],
                                     TemplateID: 4847744,
                                     TemplateLanguage: true,
+                                    CustomCampaign: campaignId,
+                                    CustomID: req.user._id,
                                     Subject: `${orgName} Needs Your Help!`,
                                     Variables: {
                                         msg: template,
@@ -171,6 +181,9 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         (async function () {
                             await agenda.start();
                             await agenda.now('send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:false });
+                            const user = req.user
+                            user.campaigns = user.campaigns.concat(campaignId);
+                            await user.save()
                         })();
                     }                    
                 } catch (err) {

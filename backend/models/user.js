@@ -31,6 +31,9 @@ const userSchema = new mongoose.Schema({
     accSid: String,
     accToken: String,
     phoneNum: String,
+    domain: String,
+    orgName: String,
+    campaigns: Array,    
 });
 
 userSchema.plugin(uniqueValidator);

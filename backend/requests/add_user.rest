@@ -2,7 +2,9 @@ POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
-    "username": "test5",
+    "username": "test",
     "name": "Test User",
-    "password": "test"
+    "password": "test",
+    "domain": "test@smartraiser.ai",
+    "orgName": "SmartRaiser"
 }

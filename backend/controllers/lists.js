@@ -33,13 +33,13 @@ listRouter.post('/', userExtractor, async (req, res) => {
     }
     const user = req.user;
 
-    // Check if the configuration name already exists in the database
+    // Check if the list name already exists in the database
     const existingList = await List.findOne({ name });
     if (existingList) {
       return res.status(400).json({ error: 'List name already exists' });
     }
 
-    // Save the new configuration
+    // Save the new list
     const newList = new List({ name, list, user: user._id });
     await newList.save();
 
