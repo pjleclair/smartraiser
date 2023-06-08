@@ -131,7 +131,15 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         });
                         (async function () {
                             await agenda.start();
-                            await agenda.schedule(date, 'send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:true });
+                            await agenda.schedule(date, 'send email campaign',{ 
+                                id:req.user._id,
+                                deliveryMethod:deliveryMethod,
+                                scheduled:true,
+                                desc:campaignDesc,
+                                templateName:templateObj.name,
+                                listName:list.name,
+                                configName:configuration.name,
+                            });
                             const user = req.user
                             user.campaigns = user.campaigns.concat(campaignId);
                             await user.save()
@@ -180,7 +188,15 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         });
                         (async function () {
                             await agenda.start();
-                            await agenda.now('send email campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:false });
+                            await agenda.now('send email campaign',{ 
+                                id:req.user._id,
+                                deliveryMethod:deliveryMethod,
+                                scheduled:false,
+                                desc:campaignDesc,
+                                templateName:templateObj.name,
+                                listName:list.name,
+                                configName:configuration.name,
+                            });
                             const user = req.user
                             user.campaigns = user.campaigns.concat(campaignId);
                             await user.save()
@@ -212,7 +228,15 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         });
                         (async function () {
                             await agenda.start();
-                            await agenda.schedule(date, 'send text campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:true });
+                            await agenda.schedule(date, 'send text campaign',{ 
+                                id:req.user._id,
+                                deliveryMethod:deliveryMethod,
+                                scheduled:true,
+                                desc:campaignDesc,
+                                templateName:templateObj.name,
+                                listName:list.name,
+                                configName:configuration.name,
+                            });
                         })();
                     } else {
                         agenda.define('send text campaign', async job => {
@@ -224,7 +248,15 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         });
                         (async function () {
                             await agenda.start();
-                            await agenda.now('send text campaign',{ id:req.user._id, deliveryMethod:deliveryMethod, scheduled:false });
+                            await agenda.now('send text campaign',{ 
+                                id:req.user._id,
+                                deliveryMethod:deliveryMethod,
+                                scheduled:false,
+                                desc:campaignDesc,
+                                templateName:templateObj.name,
+                                listName:list.name,
+                                configName:configuration.name,
+                            });
                         })();
                     }
                 } catch (err) {
@@ -235,6 +267,15 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
     })
     res.json({ data: combinedData, message: "File upload successful"});
 });
+
+uploadRouter.get('/', userExtractor, async (req,res) => {
+    const jobs = await agenda.jobs()
+    const userJobs = jobs.filter((job)=>{
+        if (job.attrs.data.id.toString() === req.user._id.toString())
+            return (job)
+    }).map(obj => obj.attrs)
+    res.json(userJobs)
+})
 
 uploadRouter.post('/callback', async (req,res) => {
     const messageSid = req.body.MessageSid;

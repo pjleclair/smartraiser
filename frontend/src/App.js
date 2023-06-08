@@ -34,6 +34,9 @@ const App = () => {
   const [lists, setLists] = useState([])
   const [configurations, setConfigurations] = useState([])
   const [templates, setTemplates] = useState([])
+  const [campaigns, setCampaigns] = useState([])
+  const [oldCampaigns, setOldCampaigns] = useState([])
+  const [newCampaigns, setNewCampaigns] = useState([])
   const [stats, setStats] = useState([])
   const [openStats, setOpenStats] = useState([])
   const [deliveryStats, setDeliveryStats] = useState([])
@@ -107,6 +110,7 @@ const App = () => {
     fetchConfigurations()
     fetchLists()
     fetchStats()
+    fetchCampaigns()
   }
 
   const fetchConfigurations = () => {
@@ -139,6 +143,26 @@ const App = () => {
       setUploadMsg(error.response.data.error);
     });
   };
+
+  const fetchCampaigns = async () => {
+    const config = {
+      headers: {
+        Authorization: token
+      }
+    }
+    const campaigns = await axios.get('/api/upload/',config);
+    setCampaigns(campaigns.data)
+    const oldCampaigns = campaigns.data.filter((campaign) => {
+      if (campaign.nextRunAt === null)
+        return campaign
+    })
+    const newCampaigns = campaigns.data.filter((campaign) => {
+      if (campaign.nextRunAt !== null)
+        return campaign
+    })
+    setOldCampaigns(oldCampaigns)
+    setNewCampaigns(newCampaigns)
+  }
 
 
   const fetchLists = () => {
@@ -201,7 +225,7 @@ const App = () => {
     if (activeComponent === 'lists') {
       return <Lists setUploadMsg={setUploadMsg} onFileUpload={handleFileUpload} jsonData={jsonData} token={token} lists={lists} fetchAll={fetchAll}/>;
     } else if (activeComponent === 'fileProcessor') {
-      return <FileProcessor setUploadMsg={setUploadMsg} token={token} lists={lists} templates={templates} configurations={configurations} fetchAll={fetchAll}/>;
+      return <FileProcessor setUploadMsg={setUploadMsg} token={token} lists={lists} templates={templates} configurations={configurations} oldCampaigns={oldCampaigns} newCampaigns={newCampaigns} fetchAll={fetchAll} fetchCampaigns={fetchCampaigns}/>;
     } else if (activeComponent === 'home') {
       return <Home setUploadMsg={setUploadMsg} userName={user.name} fetchAll={fetchAll} stats={stats} openStats={openStats} deliveryStats={deliveryStats} ctrStats={ctrStats} setStats={setStats}/>;
     } else if (activeComponent === 'configurations') {

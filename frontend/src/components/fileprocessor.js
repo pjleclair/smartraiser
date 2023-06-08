@@ -4,7 +4,7 @@ import './fileprocessor.css'
 import {DateTimePicker} from '@mui/x-date-pickers/';
 import dayjs from 'dayjs'
 
-const FileProcessor = ({token, setUploadMsg,lists,configurations,templates}) => {
+const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCampaigns,newCampaigns,fetchCampaigns}) => {
   const [selectedList, setSelectedList] = useState(null)
   const [deliveryMethod, setDeliveryMethod] = useState("email")
   const [selectedConfiguration, setSelectedConfiguration] = useState(null);
@@ -64,6 +64,8 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates}) => 
 
   const handleNav = (e) => {
     setSelectedCampaignNav(e.target.id)
+    fetchCampaigns()
+    onChange(null)
   }
 
 
@@ -78,7 +80,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates}) => 
           <h5 id='scheduled' onClick={handleNav} style={(selectedCampaignNav === 'scheduled') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Scheduled</h5>
           <h5 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Create</h5>
         </div>
-        {(selectedCampaignNav === 'new') ? 
+        {(selectedCampaignNav === 'new') && 
         <div className='new-campaign-container'>
           <div className='gpt-container'>
             <div className='config-select-container'>
@@ -152,7 +154,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates}) => 
               </div>
               <div className='scheduler-container'>
                 <h2 style={{color: "#8CFC86"}}>Select a Date & Time:</h2>
-                <DateTimePicker onChange={(i)=>onChange(i.toISOString())} value={value} minDateTime={dayjs().minute(dayjs().minute()+15)} sx={{
+                <DateTimePicker onChange={(i)=>onChange(i.toISOString())} value={value} sx={{
                   '& .MuiOutlinedInput-root': {
                     color: '#fff',
                     '&.Mui-focused fieldset': {
@@ -177,7 +179,44 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates}) => 
             <br />
             <button className='upload-button' onClick={handleUpload}>Upload</button>
           </div>
-        </div> : <div>Existing Campaign</div>
+        </div>}
+        {(selectedCampaignNav === 'scheduled') &&
+        <div className='new-campaign-container'>
+                <div className='gpt-container'>
+                  {(newCampaigns.length > 0) ?
+                  (newCampaigns.map(campaign => {
+                    return (<div key={campaign._id} className='campaign-info'>
+                      <h3><span>Template name:</span> {campaign.data.templateName}</h3>
+                      <h3><span>Config name:</span> {campaign.data.templateName}</h3>
+                      <h3><span>List name:</span> {campaign.data.templateName}</h3>
+                      <h3><span>Scheduled date:</span> {dayjs(campaign.nextRunAt).$d.toString()}</h3>
+                      <h3><span>Delivery method:</span> {campaign.data.deliveryMethod}</h3>
+                      <h3><span>Campaign description:</span></h3>
+                      <p>{campaign.data.desc}</p>
+                    </div>)
+                  })) : 
+                    <h3>You do not have any campaigns currently scheduled.</h3>
+                  }
+                </div>
+        </div>
+        }
+        {(selectedCampaignNav === 'history') &&
+        <div className='new-campaign-container'>
+                <div id='history' className='gpt-container'>
+                  {oldCampaigns.map(campaign => {
+                      return (<div key={campaign._id} className='campaign-info'>
+                        <h3><span>Template name:</span> {campaign.data.templateName}</h3>
+                        <h3><span>Config name:</span> {campaign.data.templateName}</h3>
+                        <h3><span>List name:</span> {campaign.data.templateName}</h3>
+                        <h3><span>Scheduled:</span> {String(campaign.data.scheduled)}</h3>
+                        <h3><span>Delivery date:</span> {dayjs(campaign.lastFinishedAt).$d.toString()}</h3>
+                        <h3><span>Delivery method:</span> {campaign.data.deliveryMethod}</h3>
+                        <h3><span>Campaign description:</span></h3>
+                        <p>{campaign.data.desc}</p>
+                      </div>)
+                    })}
+                </div>
+        </div>
         }
       </div>
     </div>

@@ -1,0 +1,7 @@
+GET http://localhost:8080/api/upload
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBsZWNsYWlyIiwiaWQiOiI2NDgxMTVjMDFmMzI5YmRjZjYyMmY3NGYiLCJpYXQiOjE2ODYyNDIyNzYsImV4cCI6MTY4NjMyODY3Nn0.Tb8Qx7ohapbkEDIPpwRgITBjoOVy1i8eAw5D4LYEk5A
+
+{
+    
+}

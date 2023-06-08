@@ -99,6 +99,28 @@
     display: none;
   }
 
+.gpt-container#history {
+    gap: 1rem;
+}
+
+.campaign-info {
+    display: flex;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    border: 1px solid;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.campaign-info h3 {
+    margin: 1rem;
+}
+
+.campaign-info p {
+    margin: 0rem;
+}
+
+
 .file-container {
     display: flex;
     align-items: center;
