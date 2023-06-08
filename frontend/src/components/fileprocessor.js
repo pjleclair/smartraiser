@@ -201,10 +201,11 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                     return (<div key={campaign._id} className='campaign-info'>
                       <div id='del' onClick={()=>handleClick(campaign._id)}>X</div>
                       <h3><span>Template name:</span> {campaign.data.templateName}</h3>
-                      <h3><span>Config name:</span> {campaign.data.templateName}</h3>
+                      <h3><span>Configuration name:</span> {campaign.data.templateName}</h3>
                       <h3><span>List name:</span> {campaign.data.templateName}</h3>
                       <h3><span>Scheduled date:</span> {dayjs(campaign.nextRunAt).$d.toString()}</h3>
                       <h3><span>Delivery method:</span> {campaign.data.deliveryMethod}</h3>
+                      <div />
                       <h3><span>Campaign description:</span></h3>
                       <p>{campaign.data.desc}</p>
                     </div>)
@@ -220,11 +221,11 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                   {oldCampaigns.map(campaign => {
                       return (<div key={campaign._id} className='campaign-info'>
                         <h3><span>Template name:</span> {campaign.data.templateName}</h3>
-                        <h3><span>Config name:</span> {campaign.data.templateName}</h3>
+                        <h3><span>Configuration name:</span> {campaign.data.templateName}</h3>
                         <h3><span>List name:</span> {campaign.data.templateName}</h3>
-                        <h3><span>Scheduled:</span> {String(campaign.data.scheduled)}</h3>
                         <h3><span>Delivery date:</span> {dayjs(campaign.lastFinishedAt).$d.toString()}</h3>
                         <h3><span>Delivery method:</span> {campaign.data.deliveryMethod}</h3>
+                        <h3><span>Scheduled:</span> {String(campaign.data.scheduled)}</h3>
                         <h3><span>Campaign description:</span></h3>
                         <p>{campaign.data.desc}</p>
                       </div>)

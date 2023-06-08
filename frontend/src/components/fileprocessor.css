@@ -104,7 +104,8 @@
 }
 
 .campaign-info {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     /* flex-direction: column; */
     flex-wrap: wrap;
     border: 1px solid;
@@ -221,7 +222,7 @@ input:focus {
         width: 90%;
     }
     #del {
-        display: flex;
+        display: grid;
         left: 90%;
     }
 }
