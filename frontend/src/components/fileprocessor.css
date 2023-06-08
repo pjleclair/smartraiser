@@ -110,6 +110,7 @@
     border: 1px solid;
     border-radius: 8px;
     width: 100%;
+    position: relative;
 }
 
 .campaign-info h3 {
@@ -118,6 +119,28 @@
 
 .campaign-info p {
     margin: 0rem;
+}
+
+#del {
+    position: absolute;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    left: 95%;
+    margin-top: 1rem;
+    cursor: pointer;
+    border: 2px solid #CF6679;
+    border-radius: 20px;
+    width: 1rem;
+    background-color: #121212;
+}
+
+#del:hover {
+    color: #CF6679;
+}
+
+.campaign-info:hover #del {
+    display: flex;
 }
 
 
@@ -196,6 +219,10 @@ input:focus {
     }
     input {
         width: 90%;
+    }
+    #del {
+        display: flex;
+        left: 90%;
     }
 }
 

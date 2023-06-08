@@ -8,6 +8,7 @@ const {Agenda} = require('@hokify/agenda');
 const { userExtractor } = require('../utils/middleware');
 const user = require('../models/user');
 const { randomUUID } = require('crypto');
+const ObjectId = require('mongodb').ObjectId;
 
 //Agenda Job Scheduling Configuration
 const agenda = new Agenda({ db: { address: process.env.MONGO } });
@@ -285,6 +286,14 @@ uploadRouter.post('/callback', async (req,res) => {
       .feedback
       .create({outcome: 'confirmed'})
       .then(feedback => console.log(feedback.messageSid));
+})
+
+uploadRouter.delete('/:id', async (req,res) => {
+    const deletedCampaign = await agenda.cancel({_id: ObjectId(req.params.id)})
+    if (deletedCampaign === 1)
+        res.json({msg: 'Campaign deleted successfully!'})
+    else
+        res.json({msg: 'Error deleting campaign'})
 })
 
 module.exports = uploadRouter;

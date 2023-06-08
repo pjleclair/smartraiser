@@ -68,6 +68,19 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
     onChange(null)
   }
 
+  const handleClick = async (id) => {
+    if (window.confirm("Are you sure you want to delete this campaign?")) {
+      const config = {
+        headers: {
+          Authorization: token
+        }
+      }
+      const deletedCampaign = await axios.delete(`/api/upload/${id}`,config)
+      setUploadMsg(deletedCampaign.data.msg)
+      fetchCampaigns()
+    }
+  }
+
 
   return (
     <div className='processor-container'>
@@ -186,6 +199,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                   {(newCampaigns.length > 0) ?
                   (newCampaigns.map(campaign => {
                     return (<div key={campaign._id} className='campaign-info'>
+                      <div id='del' onClick={()=>handleClick(campaign._id)}>X</div>
                       <h3><span>Template name:</span> {campaign.data.templateName}</h3>
                       <h3><span>Config name:</span> {campaign.data.templateName}</h3>
                       <h3><span>List name:</span> {campaign.data.templateName}</h3>
