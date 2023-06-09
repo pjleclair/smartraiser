@@ -33,7 +33,8 @@ const userSchema = new mongoose.Schema({
     phoneNum: String,
     domain: String,
     orgName: String,
-    campaigns: Array,    
+    campaigns: Array,
+    msgServiceSid: String,    
 });
 
 userSchema.plugin(uniqueValidator);

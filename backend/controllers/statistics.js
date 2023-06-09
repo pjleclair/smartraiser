@@ -19,7 +19,7 @@ const mailjet = Mailjet.apiConnect(
 statsRouter.get('/', userExtractor, async (req,res,next) => {
     try {
         //twilio client
-        //const client = require("twilio")(accountSid, authToken, { accountSid: req.user.accSid });
+        const client = require("twilio")(accountSid, authToken, { accountSid: req.user.accSid });
         
         //get mailjet campaigns
         const request = await mailjet
@@ -38,9 +38,12 @@ statsRouter.get('/', userExtractor, async (req,res,next) => {
         //     .get("template", {'version': 'v3'})
         //     .request()
         // console.log(templates.body.Data)
-        //const messages = await client.messages.list()
-        // res.status(200).json({emailStats,messages})
-        res.status(200).json({emailStats})
+        const allMessages = await client.messages.list()
+        const messages = allMessages.filter((msg) => {
+            if (msg.from === req.user.phoneNum)
+                return msg
+        })
+        res.status(200).json({emailStats,messages})
     } catch (error) {
         next(error)
     }

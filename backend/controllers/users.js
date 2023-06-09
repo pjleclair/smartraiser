@@ -19,20 +19,29 @@ usersRouter.post('/', async (req, res) => {
     {
         return res.status(500).json({error: "user exists already, please login"})
     }
+
+    //create twilio subaccount
     const account = await client.api.v2010.accounts
                 .create({friendlyName: name})
     const accSid = account.sid;
     const accToken = account.authToken;
 
+    //reinstantiate twilio client with new subaccount
     client = require("twilio")(accountSid, authToken, { accountSid: accSid });
 
+    //list all toll-free numbers & purchase the first
     const availNums = await client.availablePhoneNumbers('US')
             .tollFree
             .list({limit: 1})    
     const numObj = await client.incomingPhoneNumbers
             .create({phoneNumber: availNums[0].phoneNumber})
-
     const phoneNum = numObj.phoneNumber;
+
+    //create messaging service
+    const service = await client.messaging.v1.services
+                   .create({friendlyName: name})
+    const msgServiceSid = service.sid
+
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
     const user = new User({
@@ -44,6 +53,7 @@ usersRouter.post('/', async (req, res) => {
         phoneNum,
         domain,
         orgName,
+        msgServiceSid,
     })
 
     const savedUser = await user.save();

@@ -83,8 +83,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(12px);
     padding: 1rem;
     border-radius: 20px;
     border: 1px solid rgb(47, 51, 54);
@@ -106,18 +104,29 @@
 .campaign-info {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 2rem 2rem 2rem;
     border: 1px solid;
     border-radius: 8px;
     width: 100%;
     position: relative;
+    font-size: 12px;
+    gap: .5rem;
 }
 
 .campaign-info h3 {
-    margin: 1rem;
+    margin: 0;
+    padding: .5rem;
+}
+
+.campaign-info h3 div {
+    font-weight: normal;
 }
 
 .campaign-info p {
     margin: 0rem;
+    padding: 0.5rem;
+    font-weight: normal;
+    font-size: inherit;
 }
 
 #del {

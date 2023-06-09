@@ -221,8 +221,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                         agenda.define('send text campaign', async job => {
                             await client.messages
                             .create({
-                                messagingServiceSid: process.env.TWILIO_MSG_SID, 
-                                body: template, from: phoneNum, to: `+1${num}`,
+                                body: template, messagingServiceSid: req.user.msgServiceSid, to: `+1${num}`,
                                 statusCallback: 'https://app.smartraiser.ai/api/upload/callback', provideFeedback: true,
                             })
                             .then(message => console.log(message.status));
@@ -242,7 +241,7 @@ uploadRouter.post('/', userExtractor, async (req, res) => {
                     } else {
                         agenda.define('send text campaign', async job => {
                             await client.messages
-                            .create({ body: template, from: phoneNum, to: `+1${num}`,
+                            .create({ body: template, messagingServiceSid: req.user.msgServiceSid, to: `+1${num}`,
                             statusCallback: 'https://app.smartraiser.ai/api/upload/callback', provideFeedback: true,
                             })
                             .then(message => console.log(message.status));
@@ -281,8 +280,8 @@ uploadRouter.get('/', userExtractor, async (req,res) => {
 uploadRouter.post('/callback', async (req,res) => {
     const messageSid = req.body.MessageSid;
     const messageStatus = req.body.MessageStatus;
-    if (req.body.SmsStatus === 'delivered')
-    client.messages(messageSid)
+    if (messageStatus === 'delivered')
+    await client.messages(messageSid)
       .feedback
       .create({outcome: 'confirmed'})
       .then(feedback => console.log(feedback.messageSid));

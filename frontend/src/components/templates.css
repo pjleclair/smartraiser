@@ -60,4 +60,8 @@
         flex-direction: column;
         align-content: center;
     }
+    .template-save-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
 }

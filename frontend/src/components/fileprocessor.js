@@ -220,12 +220,13 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                 <div id='history' className='gpt-container'>
                   {oldCampaigns.map(campaign => {
                       return (<div key={campaign._id} className='campaign-info'>
-                        <h3><span>Template name:</span> {campaign.data.templateName}</h3>
-                        <h3><span>Configuration name:</span> {campaign.data.templateName}</h3>
-                        <h3><span>List name:</span> {campaign.data.templateName}</h3>
-                        <h3><span>Delivery date:</span> {dayjs(campaign.lastFinishedAt).$d.toString()}</h3>
-                        <h3><span>Delivery method:</span> {campaign.data.deliveryMethod}</h3>
-                        <h3><span>Scheduled:</span> {String(campaign.data.scheduled)}</h3>
+                        <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
+                        <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
+                        <h3><span>List name:</span> <div>{campaign.data.templateName}</div></h3>
+                        <h3><span>Delivery date:</span> <div>{dayjs(campaign.lastFinishedAt).$d.toString()}</div></h3>
+                        <h3><span>Delivery method:</span> <div>{campaign.data.deliveryMethod}</div></h3>
+                        <h3><span>Scheduled:</span> <div>{String(campaign.data.scheduled)}</div></h3>
+                        <div />
                         <h3><span>Campaign description:</span></h3>
                         <p>{campaign.data.desc}</p>
                       </div>)
