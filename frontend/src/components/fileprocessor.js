@@ -200,12 +200,13 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                   (newCampaigns.map(campaign => {
                     return (<div key={campaign._id} className='campaign-info'>
                       <div id='del' onClick={()=>handleClick(campaign._id)}>X</div>
-                      <h3><span>Template name:</span> {campaign.data.templateName}</h3>
-                      <h3><span>Configuration name:</span> {campaign.data.templateName}</h3>
-                      <h3><span>List name:</span> {campaign.data.templateName}</h3>
-                      <h3><span>Scheduled date:</span> {dayjs(campaign.nextRunAt).$d.toString()}</h3>
-                      <h3><span>Delivery method:</span> {campaign.data.deliveryMethod}</h3>
+                      <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
+                      <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
+                      <h3><span>List name:</span> <div>{campaign.data.templateName}</div></h3>
+                      <h3><span>Scheduled date:</span> <div>{dayjs(campaign.nextRunAt).$d.toString()}</div></h3>
+                      <h3><span>Delivery method:</span> <div>{campaign.data.deliveryMethod}</div></h3>
                       <div />
+                      <div id='scheduled-mobile'/>
                       <h3><span>Campaign description:</span></h3>
                       <p>{campaign.data.desc}</p>
                     </div>)
@@ -223,8 +224,9 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                         <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
                         <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
                         <h3><span>List name:</span> <div>{campaign.data.templateName}</div></h3>
-                        <h3><span>Delivery date:</span> <div>{dayjs(campaign.lastFinishedAt).$d.toString()}</div></h3>
+                        <h3><span>Campaign date:</span> <div>{dayjs(campaign.lastFinishedAt).$d.toString()}</div></h3>
                         <h3><span>Delivery method:</span> <div>{campaign.data.deliveryMethod}</div></h3>
+                        <div id='history-mobile'/>
                         <h3><span>Scheduled:</span> <div>{String(campaign.data.scheduled)}</div></h3>
                         <div />
                         <h3><span>Campaign description:</span></h3>
