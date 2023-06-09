@@ -211,7 +211,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                       <p>{campaign.data.desc}</p>
                     </div>)
                   })) : 
-                    <h3>You do not have any campaigns currently scheduled.</h3>
+                    <h3>You have no campaigns currently scheduled.</h3>
                   }
                 </div>
         </div>
@@ -219,7 +219,8 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
         {(selectedCampaignNav === 'history') &&
         <div className='new-campaign-container'>
                 <div id='history' className='gpt-container'>
-                  {oldCampaigns.map(campaign => {
+                  {(oldCampaigns.length > 0) ?
+                  (oldCampaigns.map(campaign => {
                       return (<div key={campaign._id} className='campaign-info'>
                         <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
                         <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
@@ -232,7 +233,9 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                         <h3><span>Campaign description:</span></h3>
                         <p>{campaign.data.desc}</p>
                       </div>)
-                    })}
+                    })): 
+                      <h3>You have no campaign history. Select "Create" to get started!</h3>
+                    }
                 </div>
         </div>
         }
