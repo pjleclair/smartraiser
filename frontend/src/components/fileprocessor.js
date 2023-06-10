@@ -89,15 +89,15 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
       </div>
       <div className='content-container'>
         <div className='campaign-nav'>
-          <h5 id='history' onClick={handleNav} style={(selectedCampaignNav === 'history') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>History</h5>
-          <h5 id='scheduled' onClick={handleNav} style={(selectedCampaignNav === 'scheduled') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Scheduled</h5>
-          <h5 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#8CFC86'} : {color: '#FFFFFF'}}>Create</h5>
+          <h5 id='history' onClick={handleNav} style={(selectedCampaignNav === 'history') ? {color: '#868CFC'} : {color: '#FFFFFF'}}>History</h5>
+          <h5 id='scheduled' onClick={handleNav} style={(selectedCampaignNav === 'scheduled') ? {color: '#868CFC'} : {color: '#FFFFFF'}}>Scheduled</h5>
+          <h5 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#868CFC'} : {color: '#FFFFFF'}}>Create</h5>
         </div>
         {(selectedCampaignNav === 'new') && 
         <div className='new-campaign-container'>
           <div className='gpt-container'>
             <div className='config-select-container'>
-              <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select Template:</h2>
+              <h2 style={{color: "#868CFC",margin:'0 0 .5rem 0'}}>Select Template:</h2>
                 {templates && templates.length > 0 ? (
                   <div className='select'>
                     <select onChange={handleTemplateSelect}>
@@ -114,10 +114,10 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                   <p className='no-configs'>No templates found.</p>
                 )}
             </div>
-            <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
+            <div id='divider' style={{border: ".5px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
             <div className='upload-container'>
               <div className='config-select-container'>
-                <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
+                <h2 style={{color: "#868CFC",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
                   {configurations && configurations.length > 0 ? (
                     <div className='select'>
                       <select onChange={handleConfigurationSelect}>
@@ -135,7 +135,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                   )}
               </div>
               <div className='config-select-container'>
-                <h2 style={{color: "#8CFC86",margin:'0 0 .5rem 0'}}>Select List:</h2>
+                <h2 style={{color: "#868CFC",margin:'0 0 .5rem 0'}}>Select List:</h2>
                 {lists && lists.length > 0 ? (
                   <div className='select'>
                     <select onChange={handleListSelect}>
@@ -153,7 +153,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                 )}
               </div>
               <div className='delivery-container'>
-                <h2 style={{color: "#8CFC86"}}>Delivery Method:</h2>
+                <h2 style={{color: "#868CFC"}}>Delivery Method:</h2>
                 <div className='radio-container'>
                   <div id='radio'>
                     <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>
@@ -166,7 +166,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                 </div>
               </div>
               <div className='scheduler-container'>
-                <h2 style={{color: "#8CFC86"}}>Select a Date & Time:</h2>
+                <h2 style={{color: "#868CFC"}}>Select a Date & Time:</h2>
                 <DateTimePicker onChange={(i)=>onChange(i.toISOString())} value={value} sx={{
                   '& .MuiOutlinedInput-root': {
                     color: '#fff',

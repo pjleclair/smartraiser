@@ -86,11 +86,16 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
 
     const handleTemplateListSelect = (e) => {
         const id = e.target.value
-        const template = templates.find(obj => {
-            return obj._id === id
-        })
-        setSelectedTemplate(template)
-        setCurrentTemplate(template.template)
+        if (id === '') {
+            setSelectedTemplate(null)
+            setCurrentTemplate(null)
+        } else {
+            const template = templates.find(obj => {
+                return obj._id === id
+            })
+            setSelectedTemplate(template)
+            setCurrentTemplate(template.template)
+        }
     }
 
     const handleNavChange = (e) => {
@@ -269,7 +274,7 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
                         <p className='no-configs'>No templates found.</p>
                         )}
                     </div>
-                    <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
+                    <div id='divider' style={{border: ".5px solid rgba(47, 51, 54, 0.5)", width: '80%', margin: '1rem'}}></div>
                     {(selectedTemplate) && 
                         <div style={{width:'100%'}}>
                             <div className='template-name-edit-container'>

@@ -89,7 +89,7 @@ const Home = ({userName, stats, openStats, deliveryStats, ctrStats, setStats, fe
                         <button onClick={()=>handleChartChange('Delivery')}>Delivery</button>
                         <button onClick={()=>handleChartChange('CTR')}>CTR</button>
                     </div>
-                    <div id='divider' style={{border: "1px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
+                    <div id='divider' style={{border: ".5px solid rgba(47, 51, 54, 0.5)", width: '80%', margin: '1rem'}}></div>
                     <br />
                     {(stats.length > 0) && <CanvasJSChart options={options} containerProps={{width:'75%', maxWidth:'750px',height: '300px',marginBottom:'5rem'}} />}
                 </div>

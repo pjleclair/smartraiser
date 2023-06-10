@@ -26,6 +26,10 @@
     display: none;
 }
 
+.page-indicator {
+    margin-top: 4rem;
+}
+
 .config-container {
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -85,12 +89,31 @@
     align-items: center;
     padding: 1rem;
     border-radius: 20px;
-    border: 1px solid rgb(47, 51, 54);
+    border: 1px solid rgb(47 51 54 / .5);
     width: 80%;
     /* disable scrollbar visual */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
     margin-bottom: 5rem;
+
+
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    background: inherit;
+    z-index: 2;
+}
+
+.gpt-container:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: inset 0 0 1000px rgba(255, 255, 255, .5);
+    filter: blur(10px);
+    background: inherit;
+    z-index: -1;
 }
 
 .gpt-container::-webkit-scrollbar {

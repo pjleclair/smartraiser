@@ -2,7 +2,10 @@ body {
     margin: 0;
     padding: 0;
     color: #FFFFFF;
-    background-color: #121212;
+    background-image: url('./images/gradient.png');
+    background-repeat: no-repeat;
+    background-position: 100%;
+    background-attachment: fixed;
     font-family: 'Roboto', sans-serif;
 }
   
@@ -20,7 +23,6 @@ input[type="text"], input[type="password"] {
   flex: 1;
   flex-direction: column;
   width: 75%;
-  position: relative;
 }
 
 .main {
@@ -54,8 +56,6 @@ input[type="text"], input[type="password"] {
   scrollbar-width: none;  /* Firefox */
 
   height: 100%;
-
-
 }
 
 .login {
