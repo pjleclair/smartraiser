@@ -94,7 +94,6 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
           <h5 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#8cfc86'} : {color: '#FFFFFF'}}>Create</h5>
         </div>
         {(selectedCampaignNav === 'new') && 
-        <div className='new-campaign-container'>
           <div className='gpt-container'>
             <div className='config-select-container'>
               <h2 style={{color: "#8cfc86",margin:'0 0 .5rem 0'}}>Select Template:</h2>
@@ -199,30 +198,27 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
             </div>
             <br />
             <button className='upload-button' onClick={handleUpload}>Upload</button>
-          </div>
-        </div>}
+          </div>}
         {(selectedCampaignNav === 'scheduled') &&
-        <div className='new-campaign-container'>
-                <div className='gpt-container'>
-                  {(newCampaigns.length > 0) ?
-                  (newCampaigns.map(campaign => {
-                    return (<div key={campaign._id} className='campaign-info'>
-                      <div id='del' onClick={()=>handleClick(campaign._id)}>X</div>
-                      <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
-                      <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
-                      <h3><span>List name:</span> <div>{campaign.data.templateName}</div></h3>
-                      <h3><span>Scheduled date:</span> <div>{dayjs(campaign.nextRunAt).$d.toString()}</div></h3>
-                      <h3><span>Delivery method:</span> <div>{campaign.data.deliveryMethod}</div></h3>
-                      <div />
-                      <div id='scheduled-mobile'/>
-                      <h3><span>Campaign description:</span></h3>
-                      <p>{campaign.data.desc}</p>
-                    </div>)
-                  })) : 
-                    <h3>You have no campaigns currently scheduled.</h3>
-                  }
-                </div>
-        </div>
+          <div className='gpt-container'>
+            {(newCampaigns.length > 0) ?
+            (newCampaigns.map(campaign => {
+              return (<div key={campaign._id} className='campaign-info'>
+                <div id='del' onClick={()=>handleClick(campaign._id)}>X</div>
+                <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
+                <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
+                <h3><span>List name:</span> <div>{campaign.data.templateName}</div></h3>
+                <h3><span>Scheduled date:</span> <div>{dayjs(campaign.nextRunAt).$d.toString()}</div></h3>
+                <h3><span>Delivery method:</span> <div>{campaign.data.deliveryMethod}</div></h3>
+                <div />
+                <div id='scheduled-mobile'/>
+                <h3><span>Campaign description:</span></h3>
+                <p>{campaign.data.desc}</p>
+              </div>)
+            })) : 
+              <h3>You have no campaigns currently scheduled.</h3>
+            }
+          </div>
         }
         {(selectedCampaignNav === 'history') &&
             <div id='history' className='gpt-container'>

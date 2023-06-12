@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     color: #FFFFFF;
-    background-image: url('./images/gradient.png');
+    background-image: linear-gradient(203deg, rgb(84, 182, 202) 76%, rgb(140, 252, 134) 100%);
     background-repeat: no-repeat;
     background-position: 100%;
     background-attachment: fixed;
