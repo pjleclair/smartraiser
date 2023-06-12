@@ -9,12 +9,14 @@ const Notification = ({message, msgColor}) => {
         borderColor = msgColor;
     } else {
         notifColor = '#FFFFFF';
-        borderColor = '#03DAC5'
+        borderColor = '#8cfc86'
     }
     return(
         <div style={{
             color: notifColor,
-            borderColor: borderColor
+            borderColor: borderColor,
+            backgroundColor: 'rgba(255,255,255,0.3)',
+            backdropFilter: 'blur(12px)'
         }} className="notification">{message}</div>
     )
 }

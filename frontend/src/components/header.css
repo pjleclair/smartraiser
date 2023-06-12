@@ -7,7 +7,8 @@
     left: 0;
     right: 0;
     border-bottom-width: 1px;
-    border-bottom-color: rgb(47, 51, 54);
+    /* border-bottom-color: rgb(47, 51, 54); */
+    border-bottom-color: rgba(255, 255, 255, .5);
     border-bottom-style: solid;
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
@@ -82,7 +83,7 @@ h1 span {
 
 .header #img:hover, .header #ai:hover {
     border: 1px solid;
-    border-color: #03DAC5;
+    border-color: #8CFC86;
     border-radius: 20px;
     background-color: transparent;
   }

@@ -108,7 +108,7 @@ const Lists = ({ onFileUpload, jsonData, token, setUploadMsg, lists, fetchAll })
             <p style={{width: 'fit-content', margin: '0', color:'#8cfc86'}}>Upload a file below to create a list:</p>
             <input type="file" onChange={onFileUpload} />
           </div>
-          <div id='divider' style={{border: ".5px solid rgba(47, 51, 54, 0.5)", width: '80%', margin: '2rem 0 2rem 0'}}></div>
+          <div id='divider' style={{border: ".5px solid rgba(255, 255, 255, .5)", width: '80%', margin: '2rem 0 2rem 0'}}></div>
           {jsonData && jsonData.length > 0 && (
               <div className='list-info'>
                 <div className='list-name-container'>
@@ -165,7 +165,7 @@ const Lists = ({ onFileUpload, jsonData, token, setUploadMsg, lists, fetchAll })
                 )}
               </div>
           </div>
-          <div id='divider' style={{border: ".5px solid rgba(47, 51, 54, 0.5)", width: '80%', margin: '2rem 0 2rem 0'}}></div>
+          <div id='divider' style={{border: ".5px solid rgba(255, 255, 255, .5)", width: '80%', margin: '2rem 0 2rem 0'}}></div>
           {(selectedList && (selectedList.list !== undefined)) && (
               <div className='list-info'>
                 <div className='list-name-container'>

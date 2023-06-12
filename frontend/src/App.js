@@ -181,38 +181,42 @@ const App = () => {
   };
 
   const fetchStats = async () => {
-    const config = {
-      headers: {
-        Authorization: user.token
+    try {
+      const config = {
+        headers: {
+          Authorization: user.token
+        }
       }
-    }
-    const stats = await axios.get('/api/statistics',config)
-    const emailStats = stats.data.emailStats;
-    const txtStats = stats.data.messages;
-    console.log(txtStats)
-    const openData = emailStats.map((obj)=>{
-        return {
-            x: dayjs.unix(obj.SendTimeStart).$d,
-            y: (obj.OpenedCount/obj.DeliveredCount).toFixed(3)*100
-        }
-    })
+      const stats = await axios.get('/api/statistics',config)
+      const emailStats = stats.data.emailStats;
+      const txtStats = stats.data.messages;
+      console.log(txtStats)
+      const openData = emailStats.map((obj)=>{
+          return {
+              x: dayjs.unix(obj.SendTimeStart).$d,
+              y: (obj.OpenedCount/obj.DeliveredCount).toFixed(3)*100
+          }
+      })
 
-    const deliveryData = emailStats.map((obj)=>{
-        return {
-            x: dayjs.unix(obj.SendTimeStart).$d,
-            y: obj.DeliveredCount
-        }
-    })
-    const ctrData = emailStats.map((obj)=>{
-        return {
-            x: dayjs.unix(obj.SendTimeStart).$d,
-            y: (obj.ClickedCount/obj.DeliveredCount).toFixed(3)*100
-        }
-    })
-    
-    setOpenStats(openData)
-    setDeliveryStats(deliveryData)
-    setCtrStats(ctrData)
+      const deliveryData = emailStats.map((obj)=>{
+          return {
+              x: dayjs.unix(obj.SendTimeStart).$d,
+              y: obj.DeliveredCount
+          }
+      })
+      const ctrData = emailStats.map((obj)=>{
+          return {
+              x: dayjs.unix(obj.SendTimeStart).$d,
+              y: (obj.ClickedCount/obj.DeliveredCount).toFixed(3)*100
+          }
+      })
+      
+      setOpenStats(openData)
+      setDeliveryStats(deliveryData)
+      setCtrStats(ctrData)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const toggleComponent = (component) => {

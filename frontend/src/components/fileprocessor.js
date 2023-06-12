@@ -89,15 +89,15 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
       </div>
       <div className='content-container'>
         <div className='campaign-nav'>
-          <h5 id='history' onClick={handleNav} style={(selectedCampaignNav === 'history') ? {color: '#868CFC'} : {color: '#FFFFFF'}}>History</h5>
-          <h5 id='scheduled' onClick={handleNav} style={(selectedCampaignNav === 'scheduled') ? {color: '#868CFC'} : {color: '#FFFFFF'}}>Scheduled</h5>
-          <h5 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#868CFC'} : {color: '#FFFFFF'}}>Create</h5>
+          <h5 id='history' onClick={handleNav} style={(selectedCampaignNav === 'history') ? {color: '#8cfc86'} : {color: '#FFFFFF'}}>History</h5>
+          <h5 id='scheduled' onClick={handleNav} style={(selectedCampaignNav === 'scheduled') ? {color: '#8cfc86'} : {color: '#FFFFFF'}}>Scheduled</h5>
+          <h5 id='new' onClick={handleNav} style={(selectedCampaignNav === 'new') ? {color: '#8cfc86'} : {color: '#FFFFFF'}}>Create</h5>
         </div>
         {(selectedCampaignNav === 'new') && 
         <div className='new-campaign-container'>
           <div className='gpt-container'>
             <div className='config-select-container'>
-              <h2 style={{color: "#868CFC",margin:'0 0 .5rem 0'}}>Select Template:</h2>
+              <h2 style={{color: "#8cfc86",margin:'0 0 .5rem 0'}}>Select Template:</h2>
                 {templates && templates.length > 0 ? (
                   <div className='select'>
                     <select onChange={handleTemplateSelect}>
@@ -114,10 +114,10 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                   <p className='no-configs'>No templates found.</p>
                 )}
             </div>
-            <div id='divider' style={{border: ".5px solid rgb(47, 51, 54)", width: '80%', margin: '1rem'}}></div>
+            <div id='divider' style={{border: ".5px solid rgba(255, 255, 255, .5)", width: '80%', margin: '1rem'}}></div>
             <div className='upload-container'>
               <div className='config-select-container'>
-                <h2 style={{color: "#868CFC",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
+                <h2 style={{color: "#8cfc86",margin:'0 0 .5rem 0'}}>Select Configuration:</h2>
                   {configurations && configurations.length > 0 ? (
                     <div className='select'>
                       <select onChange={handleConfigurationSelect}>
@@ -135,7 +135,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                   )}
               </div>
               <div className='config-select-container'>
-                <h2 style={{color: "#868CFC",margin:'0 0 .5rem 0'}}>Select List:</h2>
+                <h2 style={{color: "#8cfc86",margin:'0 0 .5rem 0'}}>Select List:</h2>
                 {lists && lists.length > 0 ? (
                   <div className='select'>
                     <select onChange={handleListSelect}>
@@ -153,7 +153,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                 )}
               </div>
               <div className='delivery-container'>
-                <h2 style={{color: "#868CFC"}}>Delivery Method:</h2>
+                <h2 style={{color: "#8cfc86"}}>Delivery Method:</h2>
                 <div className='radio-container'>
                   <div id='radio'>
                     <input name='deliveryMethod' type="radio" onChange={handleDeliveryMethodChange} id='text' checked={deliveryMethod === 'text'} value='text'/>
@@ -166,12 +166,20 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                 </div>
               </div>
               <div className='scheduler-container'>
-                <h2 style={{color: "#868CFC"}}>Select a Date & Time:</h2>
+                <h2 style={{color: "#8cfc86"}}>Select a Date & Time:</h2>
                 <DateTimePicker onChange={(i)=>onChange(i.toISOString())} value={value} sx={{
                   '& .MuiOutlinedInput-root': {
                     color: '#fff',
+                    borderColor: '#fff',
+                    '& fieldset': {
+                      borderColor: '#fff'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#8cfc86'
+                    },
                     '&.Mui-focused fieldset': {
-                      borderColor: '#03DAC5'
+                      color: '#fff',
+                      borderColor: '#8cfc86'
                     }
                   },
                   '& .MuiInputBase-input': {
@@ -181,7 +189,7 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
                     color: '#fff'
                   },
                   '& .MuiSvgIcon-root:hover': {
-                    color: '#03DAC5'
+                    color: '#8cfc86'
                   },
                   '& .MuiButtonBase-root:hover': {
                     border: 'none'
@@ -217,27 +225,25 @@ const FileProcessor = ({token, setUploadMsg,lists,configurations,templates,oldCa
         </div>
         }
         {(selectedCampaignNav === 'history') &&
-        <div className='new-campaign-container'>
-                <div id='history' className='gpt-container'>
-                  {(oldCampaigns.length > 0) ?
-                  (oldCampaigns.map(campaign => {
-                      return (<div key={campaign._id} className='campaign-info'>
-                        <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
-                        <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
-                        <h3><span>List name:</span> <div>{campaign.data.templateName}</div></h3>
-                        <h3><span>Campaign date:</span> <div>{dayjs(campaign.lastFinishedAt).$d.toString()}</div></h3>
-                        <h3><span>Delivery method:</span> <div>{campaign.data.deliveryMethod}</div></h3>
-                        <div id='history-mobile'/>
-                        <h3><span>Scheduled:</span> <div>{String(campaign.data.scheduled)}</div></h3>
-                        <div />
-                        <h3><span>Campaign description:</span></h3>
-                        <p>{campaign.data.desc}</p>
-                      </div>)
-                    })): 
-                      <h3>You have no campaign history. Select "Create" to get started!</h3>
-                    }
-                </div>
-        </div>
+            <div id='history' className='gpt-container'>
+              {(oldCampaigns.length > 0) ?
+              (oldCampaigns.map(campaign => {
+                  return (<div key={campaign._id} className='campaign-info'>
+                    <h3><span>Template name:</span> <div>{campaign.data.templateName}</div></h3>
+                    <h3><span>Configuration name:</span> <div>{campaign.data.templateName}</div></h3>
+                    <h3><span>List name:</span> <div>{campaign.data.templateName}</div></h3>
+                    <h3><span>Campaign date:</span> <div>{dayjs(campaign.lastFinishedAt).$d.toString()}</div></h3>
+                    <h3><span>Delivery method:</span> <div>{campaign.data.deliveryMethod}</div></h3>
+                    <div id='history-mobile'/>
+                    <h3><span>Scheduled:</span> <div>{String(campaign.data.scheduled)}</div></h3>
+                    <div />
+                    <h3><span>Campaign description:</span></h3>
+                    <p>{campaign.data.desc}</p>
+                  </div>)
+                })): 
+                  <h3>You have no campaign history. Select "Create" to get started!</h3>
+                }
+            </div>
         }
       </div>
     </div>

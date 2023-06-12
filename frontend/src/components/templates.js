@@ -215,7 +215,7 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
                             <input type='text' required onChange={handleDonateLinkChange} value={donateLink} placeholder='ex: https://bit.ly/ShJ67w'></input>
                             </div>
                         </div>
-                        <div className='delivery-container'>
+                        <div id='intended' className='delivery-container'>
                             <h2 style={{color: "#8CFC86"}}>Intended Delivery Method:</h2>
                             <div className='radio-container'>
                                 <div id='radio'>
@@ -274,7 +274,7 @@ const Templates = ({token, setUploadMsg, templates, fetchAll}) => {
                         <p className='no-configs'>No templates found.</p>
                         )}
                     </div>
-                    <div id='divider' style={{border: ".5px solid rgba(47, 51, 54, 0.5)", width: '80%', margin: '1rem'}}></div>
+                    <div id='divider' style={{border: ".5px solid rgba(255, 255, 255, .5)", width: '80%', margin: '1rem'}}></div>
                     {(selectedTemplate) && 
                         <div style={{width:'100%'}}>
                             <div className='template-name-edit-container'>

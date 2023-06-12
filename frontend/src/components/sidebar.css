@@ -47,7 +47,7 @@
     left: 0;
     right: 0;
     z-index: 3;
-    border-top-color: rgb(47, 51, 54);
+    border-top-color: rgba(255, 255, 255, .5);
     border-top-width: 1px;
     border-top-style: solid;
     padding: .5rem 0;
@@ -116,13 +116,13 @@
 
 .sidebar img:hover {
   border: 1px solid;
-  border-color: #03DAC5;
+  border-color: #8cfc86;
   background-color: transparent;
 }
 
 .sidebar #ai:hover {
   border: 1px solid;
-  border-color: #03DAC5;
+  border-color: #8cfc86;
   background-color: transparent;
   border-radius: 20px;
 }

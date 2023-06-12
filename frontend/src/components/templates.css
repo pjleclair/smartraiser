@@ -20,14 +20,14 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;
+    background: inherit;
 }
 
 .config-container {
     margin-bottom: 0;
 }
 
-.delivery-container {
+.delivery-container#intended {
     margin: 2rem 0;
 }
 

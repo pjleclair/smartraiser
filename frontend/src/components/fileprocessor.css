@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-around;
     width: 90%;
+    z-index: 3;
 }
 
 .campaign-nav h5 {
@@ -9,6 +10,7 @@
 }
 
 .new-campaign-container {
+    background: inherit;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -89,7 +91,7 @@
     align-items: center;
     padding: 1rem;
     border-radius: 20px;
-    border: 1px solid rgb(47 51 54 / .5);
+    border: 1px solid rgba(255, 255, 255, .5);
     width: 80%;
     /* disable scrollbar visual */
     -ms-overflow-style: none;  /* IE and Edge */
@@ -201,18 +203,26 @@
 input {
     padding: 5px 12px;
     line-height: 20px;
-    color: #24292e;
+    color: #fff;
     vertical-align: middle;
-    background-color: #ffffff;
+    background-color: rgba(255,255,255,.2);
     background-repeat: no-repeat;
     background-position: right 8px center;
-    border: 1px solid #03DAC5;
+    border: 1px solid #8cfc86;
     border-radius: 6px;
     outline: none;
     box-shadow: rgba(225, 228, 232, 0.2) 0px 1px 0px 0px inset;    
 }
+input::placeholder {
+    color: #fff
+}
+input[type='file']::file-selector-button {
+    border: .5px solid rgba(255, 255, 255, .5);
+    background-color: rgba(255,255,255,.2);
+    color: #fff;
+}
 input:focus {
-    border-color: #03DAC5;
+    border-color: #8cfc86;
     outline: none;
     box-shadow: rgba(3, 218, 197, .8) 0px 0px 0px 2px;
 }
@@ -271,6 +281,9 @@ input:focus {
         display: grid;
         left: 90%;
     }
+    .gpt-container:before {
+        box-shadow: inset 0 0 600px rgba(255, 255, 255, .5);
+    }
 }
 
 @media (max-width: 875px) {
@@ -297,7 +310,7 @@ input#email,input#text {
     display: flex;
     align-items: center;
     font-size: larger;
-    accent-color: #03DAC5;
+    accent-color: #8cfc86;
 }
 
 .radio-container {
@@ -324,7 +337,7 @@ button {
 }
 button:hover {
     border: 1px solid transparent;
-    color: #03DAC5;
+    color: #8cfc86;
 }
 
 p {
@@ -336,13 +349,14 @@ p {
 }
 
 :root {
-    --select-border: #000000;
-    --select-focus: #03DAC5;
+    --select-border: rgba(255,255,255,.5);
+    --select-focus: #8cfc86;
     --select-arrow: var(--select-border);
 }
 
 select {
-    background-color: transparent;
+    background-color: inherit;
+    color: #fff;
     border: none;
     padding: 0 1em 0 0;
     margin: 0;
@@ -372,9 +386,6 @@ select {
     font-size: 1.25rem;
     cursor: pointer;
     line-height: 1.1;
-
-    background-color: #fff;
-    background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
     width: fit-content;
 }
 

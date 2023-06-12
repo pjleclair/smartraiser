@@ -143,7 +143,7 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configura
           <div className='upload-config-container'>
             <p style={{width: 'fit-content', margin: '0'}}>Upload a file below to create a configuration:</p>
             <input type="file" onChange={onFileUpload} />
-            <div id='divider' style={{border: ".5px solid rgba(47, 51, 54, 0.5)", width: '80%', margin: '2rem'}}></div>
+            <div id='divider' style={{border: ".5px solid rgba(255, 255, 255, .5)", width: '80%', margin: '2rem'}}></div>
             {sampleData.length > 0 && (
               <div className="column-mapping">
                 <h2>Column Mapping:</h2>
@@ -203,7 +203,7 @@ const Configurations = ({ onFileUpload, jsonData, token, setUploadMsg, configura
             ) : (
               <p className='no-configs'>No configurations found.</p>
             )}
-            <div id='divider' style={{border: ".5px solid rgba(47, 51, 54, 0.5)", width: '80%', margin: '2rem'}}></div>
+            <div id='divider' style={{border: ".5px solid rgba(255, 255, 255, .5)", width: '80%', margin: '2rem'}}></div>
             {(selectedConfiguration && (selectedConfiguration.name.length > 0)) && (
               <div className="column-mapping">
                 <h2>Column Mapping:</h2>
